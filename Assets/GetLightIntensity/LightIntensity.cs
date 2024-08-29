@@ -2,32 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Experimental.GlobalIllumination;
 using LightType = UnityEngine.LightType;
 
-public class LightIntensity : MonoBehaviour
+public class LightIntensity
 {
-    private float LightValue;
-    private void Update()
-    {
-        LightValue = LightIntensity_A.GetLightIntensity(transform.position,transform.up);
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(this.transform.position,0.1f);
-    }
-
-    private void OnGUI()
-    {
-        GUI.Label(new Rect(10, 10, 200, 30), LightValue.ToString());
-    }
-}
-
-public class LightIntensity_A
-{
-    static public float GetLightIntensity(Vector3 worldPosition, Vector3 worldNormal)
+    static public float GetLightIntensity(Vector3 worldPosition)
     {
         var intensity = 0.0f;
         Light[] lights = GameObject.FindObjectsOfType<Light>();
