@@ -7,5 +7,5 @@ public struct AbstractBud
    public bool[] RhythmRatio; // rhythm ratio - $w_\varphi$ 节律比 w
    public Func<int, AbstractBud, float> BranchingIntensity;// Branching intensity - F(i) - a 分支强度 a
    public Func<float> SpecialRatio; // Special ratio - $S()$ 特殊随即比 s
-   public Automaton Automaton; // 自动机
+   public InAutomaton InAutomaton; // 自动机
 }
