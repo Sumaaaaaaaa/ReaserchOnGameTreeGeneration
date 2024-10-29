@@ -10,7 +10,7 @@ public class Tester: MonoBehaviour
     private void Awake()
     {
         // 一个单尺度自动机的例子
-        
+        /*
         var p1 = new Phytomer(){Name = "p1"};
         var p2 = new Phytomer(){Name = "p2"};
         var p3 = new Phytomer(){Name = "p3"};
@@ -19,14 +19,14 @@ public class Tester: MonoBehaviour
         float[,] adjMat = new float[,] { {0,0.5f,0.5f},{0,0.5f,0.5f},{0,0,0}};
         int entranceIndex = 0;
         _inAutomaton = new InAutomaton(vertices, repeatTimes, adjMat, entranceIndex,0);
-        
+        */
         
         // 一个双尺度自动机的例子
-        /*
+        
         var p1 = new Phytomer() { Name = "P1" };
         var p2 = new Phytomer() { Name = "P2" };
         Phytomer[] vertices = new Phytomer[] {p1,p2};
-        int[] repeatTimes = new[] { 2, 0 };
+        int[] repeatTimes = new[] { 1, 0 };
         float[,] adjMat = new float[,] {{0,1},{1,0}};
         int entranceIndex = 0;
         var automatonA = new InAutomaton(vertices, repeatTimes, adjMat,0, entranceIndex);
@@ -39,22 +39,43 @@ public class Tester: MonoBehaviour
         adjMat = new float[,] {{0,0.5f,0.5f},{0,0,0},{0,0,0} };
         entranceIndex = 0;
         var automatonB = new InAutomaton(vertices, repeatTimes, adjMat,0, entranceIndex);
+
+        _outAutomaton = new OutAutomaton(
+            vertices: new InAutomaton[] { automatonA, automatonB },
+            repeatTimes:new int[]{2,0},
+            adjMat:new float[,]{{0,1},{1,0}},
+            entranceIndex:0,
+            0
+        );
         
         //TODO: 完成这个双尺度的例子
 
-        for (int i = 0; i < 6; i++)
-        {
-            print(automatonB.Expansion().Value.Name);
-        }
-        */
+
     }
 
     private void Update()
     {
+        
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            /*
             var lll = _inAutomaton.Expansion();
             print($"{lll.Value.Name}");
+            */
+            
+            var result = _outAutomaton.Expansion(3);
+            for (var i = 0; i < result.Length; i++)
+            {
+                if (result[i] is null)
+                {
+                    print("Null");
+                    break;
+                }
+                print(result[i].Value.Name);
+            }
+            
         }
+        
+        
     }
 }

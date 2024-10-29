@@ -13,7 +13,7 @@ public class InAutomaton : DualAutomaton
     /// <param name="randomSeed">随机种</param>
     /// <param name="dataCheck">是否对输入的数据进行检查</param>
     public InAutomaton(Phytomer[] vertices,int[] repeatTimes, float[,] adjMat,int entranceIndex ,int randomSeed, bool dataCheck = true)
-        :base(repeatTimes,adjMat,entranceIndex,randomSeed,dataCheck)
+        :base(repeatTimes,adjMat,entranceIndex,randomSeed)
     {
         if (dataCheck)
         {
@@ -27,16 +27,20 @@ public class InAutomaton : DualAutomaton
         // 芽死亡时，怎么都不会产生新的对象了。
         if (_budDead) return null;
         
-        // 正常的处理
-        _stateRepeatTime += 1;
-        if (_stateRepeatTime <= _repeatTimes[_stateNow])
+        // 入口
+        if (_stateNow == -1)
         {
+            _stateNow = _enterStateIndex;
             return _vertices[_stateNow];
         }
         
-        // 清空重复次数
-        _stateRepeatTime = 0;
-        
+        // 重复
+        if (_stateRepeatTime < _repeatTimes[_stateNow])
+        {
+            _stateRepeatTime++;
+            return _vertices[_stateNow];
+        }
+
         // 跳转状态
         var sumValue = 0.0f;
         for (var i = 0; i < _vertices.Length; i++)
@@ -45,7 +49,7 @@ public class InAutomaton : DualAutomaton
             if (_random.NextDouble() <= sumValue)
             {
                 _stateNow = i;
-                _stateRepeatTime += 1;
+                _stateRepeatTime = 0;
                 return _vertices[_stateNow];
             }
         }

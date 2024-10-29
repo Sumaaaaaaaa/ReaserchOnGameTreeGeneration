@@ -5,18 +5,19 @@ using Random = System.Random;
 public abstract class DualAutomaton
 {
     protected Random _random;
-    protected int _stateNow ; // 当前处于的位置
+    protected int _stateNow  = -1; // 当前处于的位置
     protected int _stateRepeatTime = 0 ; // 重复次数
     protected bool _budDead = false; // 芽死亡，转True后，无论多少次触发，结果永远为 Null
     
     protected readonly int[] _repeatTimes; // 个体
     protected readonly float[,] _adjMat; // 邻接矩阵
+    protected readonly int _enterStateIndex; // 入口态的序号
 
-    protected DualAutomaton(int[] repeatTimes, float[,] adjMat,int entranceIndex ,int randomSeed,bool dataCheck = true)
+    protected DualAutomaton(int[] repeatTimes, float[,] adjMat,int entranceIndex ,int randomSeed)
     {
         _repeatTimes = repeatTimes;
         _adjMat = adjMat;
-        _stateNow = entranceIndex;
+        _enterStateIndex = entranceIndex;
         _random = new Random(randomSeed);
     }
     // 数据检查，如途中查找到错误会报错
