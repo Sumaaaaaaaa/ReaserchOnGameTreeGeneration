@@ -1,4 +1,5 @@
 ﻿using System;
+using Model.Class.Automaton;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -27,18 +28,14 @@ public class Tester: MonoBehaviour
         adjMat = new float[,] {{0,0.5f,0.5f},{0,0,0},{0,0,0} };
         entranceIndex = 0;
         var automatonB = new InAutomaton(vertices, repeatTimes, adjMat,0, entranceIndex);
-
+        
         _outAutomaton = new OutAutomaton(
             vertices: new InAutomaton[] { automatonA, automatonB },
             repeatTimes:new int[]{2,0},
-            adjMat:new float[,]{{0,1},{1,0}},
+            adjMat:new float[,]{{0,1},{0,0}},
             entranceIndex:0,
             0
         );
-        
-        //TODO: 完成这个双尺度的例子
-
-
     }
 
     private void Update()
@@ -46,21 +43,14 @@ public class Tester: MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.S))
         {
-            /*
-            var lll = _inAutomaton.Expansion();
-            print($"{lll.Value.Name}");
-            */
             
             var result = _outAutomaton.Expansion(3);
+            var printString = "";
             for (var i = 0; i < result.Length; i++)
             {
-                if (result[i] is null)
-                {
-                    print("Null");
-                    break;
-                }
-                print(result[i].Value.Name);
+                printString += result[i] is null ? "null" : $"{result[i].Value.Name}/";
             }
+            print(printString);
             
         }
         

@@ -1,4 +1,5 @@
 ﻿using System;
+using Model.Class.Automaton;
 using UnityEngine;
 
 public class Tester_firstLevel:MonoBehaviour

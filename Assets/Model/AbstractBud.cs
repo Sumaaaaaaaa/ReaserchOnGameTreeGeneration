@@ -1,4 +1,5 @@
 ﻿using System;
+using Model.Class.Automaton;
 
 public struct AbstractBud
 {
