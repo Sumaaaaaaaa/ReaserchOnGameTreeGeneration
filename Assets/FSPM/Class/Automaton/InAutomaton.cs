@@ -1,5 +1,5 @@
 ﻿// 注意：因为特殊要求，出度之和可以不为1！
-public class InAutomaton : DualAutomaton
+public class InAutomaton : Automaton
 {
     private readonly Phytomer[] _vertices; // 顶点列表
 

@@ -3,7 +3,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OutAutomaton : DualAutomaton
+public class OutAutomaton : Automaton
 {
     
     private readonly InAutomaton[] _vertices; // 顶点列表
@@ -21,7 +21,8 @@ public class OutAutomaton : DualAutomaton
     
     public Phytomer?[] Expansion(int times)
     {
-        List<Phytomer?> results = new List<Phytomer?>();
+        // List<Phytomer?> results = new List<Phytomer?>();
+        Phytomer?[] results = new Phytomer?[times];
         
         // 芽死亡时，怎么都不会产生新的对象了。
         if (_budDead) return null;
@@ -32,9 +33,9 @@ public class OutAutomaton : DualAutomaton
             _stateNow = _enterStateIndex;
             for (var i = 0; i < times; i++)
             {
-                results.Add(_vertices[_stateNow].Expansion());
+                results[i] = _vertices[_stateNow].Expansion();
             }
-            return results.ToArray();
+            return results;
         }
         
         //重复
@@ -43,9 +44,9 @@ public class OutAutomaton : DualAutomaton
             _stateRepeatTime ++;
             for (var i = 0; i < times; i++)
             {
-                results.Add(_vertices[_stateNow].Expansion());
+                results[i] = _vertices[_stateNow].Expansion();
             }
-            return results.ToArray();
+            return results;
         }
         
         // 跳转状态
@@ -59,9 +60,9 @@ public class OutAutomaton : DualAutomaton
                 _stateRepeatTime = 0;
                 for (var t = 0; t < times; t++)
                 {
-                    results.Add(_vertices[_stateNow].Expansion());
+                    results[i] = _vertices[_stateNow].Expansion();
                 }
-                return results.ToArray();
+                return results;
             }
         }
         

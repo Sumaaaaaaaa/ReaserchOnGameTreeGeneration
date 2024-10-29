@@ -2,7 +2,7 @@
 using UnityEngine;
 using Random = System.Random;
 
-public abstract class DualAutomaton
+public abstract class Automaton
 {
     protected Random _random;
     protected int _stateNow  = -1; // 当前处于的位置
@@ -13,7 +13,7 @@ public abstract class DualAutomaton
     protected readonly float[,] _adjMat; // 邻接矩阵
     protected readonly int _enterStateIndex; // 入口态的序号
 
-    protected DualAutomaton(int[] repeatTimes, float[,] adjMat,int entranceIndex ,int randomSeed)
+    protected Automaton(int[] repeatTimes, float[,] adjMat,int entranceIndex ,int randomSeed)
     {
         _repeatTimes = repeatTimes;
         _adjMat = adjMat;
