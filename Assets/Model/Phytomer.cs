@@ -1,5 +1,8 @@
 ﻿
-public struct Phytomer 
+namespace Model
 {
-    public string Name;
+    public class Phytomer
+    {
+        public string Name;
+    }
 }

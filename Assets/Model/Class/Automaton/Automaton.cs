@@ -1,27 +1,22 @@
 ﻿using System;
 using UnityEngine;
-using Random = System.Random;
 
 namespace Model.Class.Automaton
 {
+    // 面向使用者的定义用的类
     public abstract class Automaton
     {
-        protected Random _random;
-        protected int _stateNow  = -1; // 当前处于的位置
-        protected int _stateRepeatTime = 0 ; // 重复次数
-        protected bool _budDead = false; // 芽死亡，转True后，无论多少次触发，结果永远为 Null
-    
-        protected readonly int[] _repeatTimes; // 个体
-        protected readonly float[,] _adjMat; // 邻接矩阵
-        protected readonly int _enterStateIndex; // 入口态的序号
+        public readonly int[] RepeatTimes; // 个体
+        public readonly float[,] AdjMat; // 邻接矩阵
+        public readonly int EnterStateIndex; // 入口态的序号
 
-        protected Automaton(int[] repeatTimes, float[,] adjMat,int entranceIndex ,int randomSeed)
+        protected Automaton(int[] repeatTimes, float[,] adjMat,int entranceIndex)
         {
-            _repeatTimes = repeatTimes;
-            _adjMat = adjMat;
-            _enterStateIndex = entranceIndex;
-            _random = new Random(randomSeed);
+            RepeatTimes = repeatTimes;
+            AdjMat = adjMat;
+            EnterStateIndex = entranceIndex;
         }
+        
         // 数据检查，如途中查找到错误会报错
         protected static void DataCheck<T>(T[] vertices, int[] repeatTimes, float[,] adjMat, int entranceIndex)
         {
@@ -76,7 +71,6 @@ namespace Model.Class.Automaton
                 throw new Exception("入口序号不在范围内");
             }
         }
-    
-    
     }
+    
 }
