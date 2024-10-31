@@ -1,6 +1,6 @@
 ﻿using Random = System.Random;
 
-namespace Model.Class.Automaton
+namespace Model.Automaton
 {
     // 内部处理的实际表达芽的类
     internal abstract class BuiltinAutomaton

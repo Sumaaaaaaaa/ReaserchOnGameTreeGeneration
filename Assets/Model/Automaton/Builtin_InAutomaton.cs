@@ -1,4 +1,5 @@
-﻿namespace Model.Class.Automaton
+﻿#nullable enable
+namespace Model.Automaton
 {
     internal class BuiltinInAutomaton : BuiltinAutomaton
     {

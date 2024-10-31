@@ -1,6 +1,6 @@
-﻿namespace Model.Class.Automaton
+﻿namespace Model.Automaton
 {
-    public class OutAutomaton : Automaton
+    public class OutAutomaton : Model.Automaton.Automaton
     {
         public readonly InAutomaton[] Vertices; // 顶点列表
         

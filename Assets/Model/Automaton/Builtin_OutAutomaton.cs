@@ -1,4 +1,5 @@
-﻿namespace Model.Class.Automaton
+﻿#nullable enable
+namespace Model.Automaton
 {
     
     internal class BuiltinOutAutomaton : BuiltinAutomaton
@@ -29,11 +30,14 @@
         /// <returns>返回叶元对象数组，可能为null，意味着自动机导致的芽死亡。</returns>
         public Phytomer?[] Expansion(int times)
         {
-            // List<Phytomer?> results = new List<Phytomer?>();
-            Phytomer?[] results = new Phytomer?[times];
+            var results = new Phytomer?[times];
+            for (var i = 0; i < times; i++)
+            {
+                results[i] = null;
+            }
         
             // 芽死亡时，怎么都不会产生新的对象了。
-            if (_budDead) return null;
+            if (_budDead) return results;
         
             // 入口
             if (_stateNow == -1)
@@ -76,7 +80,7 @@
         
             // 没有能成功扩展，返回空，等于芽死亡
             _budDead = true;
-            return null;
+            return results;
         }
     }
 }

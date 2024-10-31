@@ -1,6 +1,6 @@
-﻿namespace Model.Class.Automaton
+﻿namespace Model.Automaton
 {
-    public class InAutomaton : Automaton
+    public class InAutomaton : Model.Automaton.Automaton
     {
         public readonly Phytomer[] Vertices; // 顶点列表
         

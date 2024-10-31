@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Model.Class.Automaton
+namespace Model.Automaton
 {
     // 面向使用者的定义用的类
     public abstract class Automaton
