@@ -3,13 +3,11 @@ using Model.Automaton;
 using UnityEngine;
 using Random = System.Random;
 
-namespace Model
+namespace Model.Bud
 {
-    public class Builtin_Bud
+    internal class Builtin_Bud
     {
-        internal class BuiltinBud
-   {
-      private Bud.Bud _bud;
+             private Model.Bud.Bud _bud;
       
       private int _age = 0;
       private readonly System.Random _random;
@@ -32,7 +30,7 @@ namespace Model
       //TODO: 关于芽的位置的功能。
 
       // 实例化
-      public BuiltinBud(Bud.Bud bud, Phytomer parent, int randomSeed)
+      public Builtin_Bud(Model.Bud.Bud bud, Phytomer parent, int randomSeed)
       {
          _bud = bud;
          _random = new Random(randomSeed);
@@ -142,6 +140,5 @@ namespace Model
          }
       }
 
-   }
     }
 }

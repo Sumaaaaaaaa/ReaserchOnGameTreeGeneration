@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using Model;
+﻿using Model;
 using Model.Automaton;
 using Model.Bud;
 using UnityEngine;
@@ -59,7 +57,7 @@ namespace DefaultNamespace
                 () => 4
             );
 
-            var builtinBud = new Builtin_Bud.BuiltinBud(bud,A,randomseed);
+            var builtinBud = new Builtin_Bud(bud,A,randomseed);
             for (var i = 0; i < 10; i++)
             {
                 var isActiveBud = builtinBud.Expansion(out var d);
