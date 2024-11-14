@@ -2,7 +2,7 @@
 
 namespace Model
 {
-    public class Planet
+    public partial class Planet
     {
         
     }
