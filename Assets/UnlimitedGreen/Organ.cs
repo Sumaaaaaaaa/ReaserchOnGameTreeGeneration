@@ -18,11 +18,12 @@ namespace UnlimitedGreen
             }
             
             // 汇函数返回了不合规的负数
-            for (var i = 1; i < validCycles; i++)
+            for (var i = 1; i <= validCycles; i++)
             {
                 if (sinkFunction(i) < 0)
                 {
-                    throw new ArgumentException("'sinkFunction' must return a value greater than 0 for all possible ages within the range [1, 'validCycles'].");
+                    throw new ArgumentException("'sinkFunction' must return a value greater than 0 for all possible " +
+                                                "ages within the range [1, 'validCycles'].");
                 }
             }
 #endif
