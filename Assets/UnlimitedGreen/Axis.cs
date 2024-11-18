@@ -13,7 +13,7 @@ namespace UnlimitedGreen
         public void SetTopology(Vector3 position,Vector3 direction)
         {
             Position = position;
-            Direction = direction.normalized;
+            Direction = direction;
             
             // 从 direction 计算出一个与它垂直且在水平面的向量
             SubDirection = new Vector3(direction.z, 0, -direction.x).normalized;
