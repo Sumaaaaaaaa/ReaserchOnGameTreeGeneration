@@ -4,83 +4,85 @@ using JetBrains.Annotations;
 
 namespace UnlimitedGreen
 {
-    internal class FlowerCohort
+    
+    // 存储用数据格式
+    internal class FruitCohort
     {
-        
-        // 存储用数据格式
-        private struct FlowerCohortData
+        private struct FruitCohortData
         {
-            public HashSet<EntityFlower> EntityFlowers;
+            public HashSet<EntityFruit> EntityFruits;
             public int BirthCycle;
         }
         
         // 存储数据
-        private readonly Queue<FlowerCohortData> _data;
-        private FlowerCohortData _newData;
-        private readonly Flower _flower;
+        private readonly Queue<FruitCohortData> _data;
+        private FruitCohortData _newData;
+        private readonly Fruit _fruit;
         
         // 实例化方法
-        public FlowerCohort([NotNull] Flower flower)
+        public FruitCohort([NotNull] Fruit fruit)
         {
-            _data = new Queue<FlowerCohortData>(flower.ValidCycles);
-            _newData = new FlowerCohortData(){EntityFlowers = new HashSet<EntityFlower>(),BirthCycle = 1};
-            _flower = flower;
+            _data = new Queue<FruitCohortData>(fruit.ValidCycles);
+            _newData = new FruitCohortData() { EntityFruits = new HashSet<EntityFruit>(), BirthCycle = 1 };
+            _fruit = fruit;
         }
         
         // 增加对象
-        public void Add(int plantAge,[NotNull] EntityFlower entityFlower)
+        public void Add(int plantAge, [NotNull] EntityFruit entityFruit)
         {
-            if (_newData.BirthCycle < plantAge) // 还是上回合的数据的话
+            if (_newData.BirthCycle < plantAge)
             {
-                _newData = new FlowerCohortData() {BirthCycle = plantAge,EntityFlowers = new HashSet<EntityFlower>()};
-            }
+                _newData = new FruitCohortData() { BirthCycle = plantAge, EntityFruits = new HashSet<EntityFruit>() };
+            } 
             //OPT: 如果在这进行存储_newData的更新的话，会每次需要额外传入一个植物年龄，在逻辑上也有点奇怪，能改吗。
-            
-            _newData.EntityFlowers.Add(entityFlower);
-            entityFlower.StoragePointer = _newData.EntityFlowers;
+
+            _newData.EntityFruits.Add(entityFruit);
+            entityFruit.StoragePointer = _newData.EntityFruits;
         }
         
-        // 将本回中的数据推入_data中
+        // 新数据的推入
         private void PushIn()
         {
-            if (_newData.EntityFlowers.Count > 0)
+            if (_newData.EntityFruits.Count > 0)
             {
-                _data.Enqueue(_newData);
+                _data.Enqueue(_newData); 
             }
         }
+        
         // 计算汇总和
         public float CalculateSinkSum(int plantAge)
         {
             PushIn();
-            
+
             var array = _data.ToArray();
             var sinkSum = .0f;
             foreach (var i in array)
             {
-                sinkSum += i.EntityFlowers.Count *
-                    _flower.SinkFunction(GenericFunctions.CalculateAge(plantAge, i.BirthCycle));
+                sinkSum += i.EntityFruits.Count *
+                           _fruit.SinkFunction(GenericFunctions.CalculateAge(plantAge, i.BirthCycle));
             }
             return sinkSum;
         }
         
         // 分配
-        public void Allocate(int plantAge,float producedBiomass,float sinkSum)
+        public void Allocate(int plantAge, float producedBiomass, float sinkSum)
         {
             var array = _data.ToArray();
             foreach (var i in array)
             {
-                var sinkStrength = _flower.SinkFunction(GenericFunctions.CalculateAge(plantAge, i.BirthCycle));
-                var allocateBiomass = producedBiomass * sinkStrength / sinkSum ;
-                var entityFlowers = i.EntityFlowers.ToArray();
+                var sinkStrength = _fruit.SinkFunction(GenericFunctions.CalculateAge(plantAge, i.BirthCycle));
+                var allocateBiomass = producedBiomass * sinkStrength / sinkSum;
+                var entityFruits = i.EntityFruits.ToArray();
 
                 var newBiomass = .0f;
-                for (var j = 0; j < entityFlowers.Length; j++)
+                for (var j = 0; j < entityFruits.Length; j++)
                 {
                     if (j == 0)
                     {
-                        newBiomass = entityFlowers[j].Biomass + allocateBiomass;
+                        newBiomass = entityFruits[j].Biomass + allocateBiomass;
                     }
-                    entityFlowers[j].Biomass = newBiomass;
+
+                    entityFruits[j].Biomass = newBiomass;
                 }
             }
         }
@@ -88,38 +90,38 @@ namespace UnlimitedGreen
         // 年龄增长
         public void IncreaseAge(int plantAge)
         {
-            if (!_data.TryPeek(out var flowerCohortData)) return;
-            if (GenericFunctions.CalculateAge(plantAge, flowerCohortData.BirthCycle) < _flower.ValidCycles) return;
-            
-            var array = flowerCohortData.EntityFlowers.ToArray();
+            if (!_data.TryPeek(out var fruitCohortData)) return;
+            if (GenericFunctions.CalculateAge(plantAge, fruitCohortData.BirthCycle) < _fruit.ValidCycles) return;
+
+            var array = fruitCohortData.EntityFruits.ToArray();
             foreach (var i in array)
             {
                 i.StoragePointer = null;
             }
+
             _data.Dequeue();
         }
-        
         
 #if UNITY_EDITOR
         public override string ToString()
         {
             var returnString = "";
-            returnString += "FLOWER\n";
-            for (var i = 1; i <= _flower.ValidCycles; i++)
+            returnString += "FLOWER\n5";
+            for (var i = 1; i <= _fruit.ValidCycles; i++)
             {
-                returnString += $"\t{i}......{_flower.SinkFunction(i)}\n";
+                returnString += $"\t{i}......{_fruit.SinkFunction(i)}\n";
             }
 
             returnString += "DATA\n";
             returnString += "\tNEWDATAS\n";
             returnString += $"\t\tbirthCycles={_newData.BirthCycle};contents=";
-            if (!_newData.EntityFlowers.Any())
+            if (!_newData.EntityFruits.Any())
             {
                 returnString += "'NULL'\n";
             }
             else
             {
-                var a = _newData.EntityFlowers.ToArray();
+                var a = _newData.EntityFruits.ToArray();
                 foreach (var i in a)
                 {
                     returnString += $"{i}";
@@ -134,13 +136,13 @@ namespace UnlimitedGreen
             foreach (var i in array)
             {
                 returnString += $"\t\ttbirthCycles={i.BirthCycle};contents=";
-                if (!i.EntityFlowers.Any())
+                if (!i.EntityFruits.Any())
                 {
                     returnString += "'NULL'\n";
                 }
                 else
                 {
-                    var a = i.EntityFlowers.ToArray();
+                    var a = i.EntityFruits.ToArray();
                     foreach (var j in a)
                     {
                         returnString += $"{j}";
