@@ -21,10 +21,10 @@ namespace UnlimitedGreen
         }
         
         // 存储数据
-        private Queue<ProcessData> _processQueue;
-        private HashSet<EntityPhytomer>[] _data;
+        private readonly Queue<ProcessData> _processQueue;
+        private readonly HashSet<EntityPhytomer>[] _data;
         // private Func<int, int, float> _sinkFunction;
-        private PhytomerData _phytomerData;
+        private readonly PhytomerData _phytomerData;
         
         // 实例化方法
         public NewPhytomerCohort(int maxPhysiologicalAge, 
@@ -90,6 +90,11 @@ namespace UnlimitedGreen
                 {
                     result[i] = _data[i];
                     _data[i] = new HashSet<EntityPhytomer>();
+                }
+                else
+                {
+                    result[i] = null;
+                    //OPT: 照理说这个是不是可以不用写，也是为null的。
                 }
             }
             return result;
