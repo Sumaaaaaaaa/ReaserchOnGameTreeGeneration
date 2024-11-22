@@ -25,8 +25,7 @@ namespace UnlimitedGreen
         /// 水利用率 r
         /// </summary>
         public float WaterUseEfficiency { get; private set; }
-
-        //TODO: 我感觉与生产相关的内容一会也需要加进来。
+        
         public LeafData(
             int maxPhysiologicalAge,
             float leafAllometryE,

@@ -5,12 +5,12 @@ namespace UnlimitedGreen
 {
     internal abstract class EntityOrgan<T>
     {
-        public Vector3 Direction;
+        public float PhyllotaxisRotation;
         public float Biomass;
         public HashSet<T> StoragePointer;
         public override string ToString()
         {
-            return $" [ V:{Direction},B:{Biomass},S:{StoragePointer is not null} ] ";
+            return $" [ V:{PhyllotaxisRotation},B:{Biomass},S:{StoragePointer is not null} ] ";
         }
     }
 

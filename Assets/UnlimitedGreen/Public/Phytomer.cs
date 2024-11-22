@@ -7,23 +7,14 @@ namespace UnlimitedGreen
     /// <summary>
     /// 描述叶元上本叶轴节点所带器官,
     /// None - 无携带器官， Fruit - 携带水果 ， Flower - 携带花朵。
-    /// Bud - 携带侧芽，并定义生理年龄增长量
+    /// Bud - 携带侧芽
     /// </summary>
     public enum BeerOrgan
     {
         None,
         Fruit,
         Flower,
-        Bud_SamePhysiologicalAge = 0,
-        Bud_Add1PhysiologicalAge = 1,
-        Bud_Add2PhysiologicalAge = 2,
-        Bud_Add3PhysiologicalAge = 3,
-        Bud_Add4PhysiologicalAge = 4,
-        Bud_Add5PhysiologicalAge = 5,
-        Bud_Add6PhysiologicalAge = 6,
-        Bud_Add7PhysiologicalAge = 7,
-        Bud_Add8PhysiologicalAge = 8,
-        Bud_Add9PhysiologicalAge = 9,
+        Bud
     }
     
     /// <summary>
@@ -34,11 +25,13 @@ namespace UnlimitedGreen
         public float Rotation;
         public bool HasLeaf;
         public BeerOrgan BeerOrgan;
-        public Phyllotaxis(float rotation, bool hasLeaf,BeerOrgan beerOrgan)
+        public int AddPhysiologicalAge;
+        public Phyllotaxis(float rotation, bool hasLeaf,BeerOrgan beerOrgan,int addPhysiologicalAge = 0)
         {
             Rotation = rotation;
             HasLeaf = hasLeaf;
             BeerOrgan = beerOrgan;
+            AddPhysiologicalAge = addPhysiologicalAge;
         }
     }
     public class Phytomer

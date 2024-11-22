@@ -88,7 +88,7 @@ namespace UnlimitedGreen
         /// 进行一次自动机处理，即进行一次芽扩展。
         /// </summary>
         /// <returns>返回叶元对象数组，可能为null，意味着自动机导致的芽死亡。</returns>
-        public Phytomer? Expansion()
+        public (Phytomer phytomer,int indexNow)? Expansion()
         {
             //如果芽已经死亡（当自动机可能性的总值不为1时，可能发生），则返回空的值
             if (BudDead) return null;
@@ -97,14 +97,16 @@ namespace UnlimitedGreen
             if (StateNow == -1)
             {
                 StateNow = EntranceIndex;
-                return _builtinInAutomatas[StateNow].Expansion();
+                var result = _builtinInAutomatas[StateNow].Expansion();
+                return result is null ? null : (result, StateNow);
             }
             
             // 重复
             if (StateRepeatTime < Automaton.RepeatTimes[StateNow])
             {
                 StateRepeatTime++;
-                return _builtinInAutomatas[StateNow].Expansion();
+                var result = _builtinInAutomatas[StateNow].Expansion();
+                return result is null ? null : (result, StateNow);
             }
             
             // 状态跳转
@@ -116,7 +118,8 @@ namespace UnlimitedGreen
                 if (randomVale > sumValue) continue;
                 StateNow = i;
                 StateRepeatTime = 0;
-                return _builtinInAutomatas[StateNow].Expansion();
+                var result = _builtinInAutomatas[StateNow].Expansion();
+                return result is null ? null : (result, StateNow);
             }
             
             // 芽死亡

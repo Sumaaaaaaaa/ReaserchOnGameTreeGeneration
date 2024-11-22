@@ -27,18 +27,19 @@ namespace UnlimitedGreen
         private readonly PhytomerData _phytomerData;
         
         // 实例化方法
-        public NewPhytomerCohort(int maxPhysiologicalAge, 
-            [NotNull] Func<int,int,float> sinkFunction,
+        public NewPhytomerCohort(
+            //int maxPhysiologicalAge, 
+            //[NotNull] Func<int,int,float> sinkFunction,
             [NotNull] PhytomerData phytomerData)
         {
+            _phytomerData = phytomerData;
             _processQueue = new Queue<ProcessData>();
-            _data = new HashSet<EntityPhytomer>[maxPhysiologicalAge];
+            _data = new HashSet<EntityPhytomer>[_phytomerData.MaxPhysiologicalAge];
             for (var i = 0; i < _data.Length; i++)
             {
                 _data[i] = new HashSet<EntityPhytomer>();
             }
 
-            _phytomerData = phytomerData;
 
         }
         

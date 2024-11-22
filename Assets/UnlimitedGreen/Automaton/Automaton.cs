@@ -72,6 +72,8 @@ namespace UnlimitedGreen
                 }
             }
         }
+
+        internal int Count => Vertices.Length;
     }
     public class InAutomaton : Automaton<Phytomer>
     {

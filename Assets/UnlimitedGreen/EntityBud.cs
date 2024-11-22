@@ -31,7 +31,7 @@ namespace UnlimitedGreen
                 (dualScaleAutomaton, random, physiologicalAge - 1);
         }
 
-        internal bool Expansion(Vector3 worldPosition,int planetAge,out Phytomer phytomer)
+        internal bool Expansion(Vector3 worldPosition,int planetAge,out (Phytomer phytomer,int indexNow)? phytomer)
         {
             
             // 首先将 phytomer 的返回设为 null
