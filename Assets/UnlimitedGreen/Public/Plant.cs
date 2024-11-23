@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
+using UnityEditor;
 using UnityEngine;
 using Random = System.Random;
 
@@ -54,7 +55,7 @@ namespace UnlimitedGreen
         /// <param name="phytomerSinkFunction">叶元的汇函数——输入：生理年龄、年龄，返回：汇强度</param>
         /// <param name="phytomerAllometryDatas">叶元的异速生长参数集，根据生理年龄{(b1,y1),(b2,y2)...}</param>
         /// <param name="phytomerTopologyFunc">叶元拓扑学方法，输入：AxisOrder, PrePosition, PreDirection, Length。返回的数据的含义：(NewPosition, NewDirection)</param>
-        /// <param name="axisTopologyFunc">叶元侧生轴拓扑学方法，输入：AxisOrder, PreDirection, VerticleDirectionAfterPhyllotaxisRotation,NewDirection。返回：轴的朝向</param>
+        /// <param name="axisTopologyFunc">叶元侧生轴拓扑学方法，输入：AxisOrder, PreDirection, VerticleDirectionAfterPhyllotaxisRotation。返回：轴的朝向NewDirection</param>
         /// <param name="dualScaleAutomaton">双尺度自动机，其内部的自动机数量需要与生理年龄相匹配</param>
         /// <param name="buds">芽的数据定义，定义的数量需与生理年龄相同</param>
         /// <param name="flower">定义花的参数</param>
@@ -188,8 +189,8 @@ namespace UnlimitedGreen
             
             // 获取所有的汇强度之和
             var sumSink = 0.0f;
-            sumSink += _flowerCohort.CalculateSinkSum(_age);
-            sumSink += _fruitCohort.CalculateSinkSum(_age);
+            if (_flower is not null) sumSink += _flowerCohort.CalculateSinkSum(_age);
+            if (_fruit is not null) sumSink += _fruitCohort.CalculateSinkSum(_age);
             sumSink += _leafCohort.CalculateSinkSum(_age);
             sumSink += _newPhytomerCohort.CalculateSinkSum(_age);
             sumSink += _phytomerCohort.CalculateSinkSum(_age);
@@ -201,15 +202,17 @@ namespace UnlimitedGreen
             // 次要生长
             _phytomerCohort.Allocate(_age,_biomassStorage,sumSink);
             _leafCohort.Allocate(_age,_biomassStorage,sumSink);
-            _flowerCohort.Allocate(_age,_biomassStorage,sumSink);
-            _fruitCohort.Allocate(_age,_biomassStorage,sumSink);
+            if (_flower is not null) _flowerCohort.Allocate(_age,_biomassStorage,sumSink);
+            if (_fruit is not null) _fruitCohort.Allocate(_age,_biomassStorage,sumSink);
             
             // 生产
-            _biomassStorage = _leafCohort.Production(environmentParameter);
+            var producedBiomass = _leafCohort.Production(environmentParameter);
+            Debug.Log($"生产的Biomass = {producedBiomass}");
+            _biomassStorage = producedBiomass;
             
             // 年龄增长操作
-            _fruitCohort.IncreaseAge(_age);
-            _flowerCohort.IncreaseAge(_age);
+            if (_fruit is not null) _fruitCohort.IncreaseAge(_age);
+            if (_flower is not null) _flowerCohort.IncreaseAge(_age);
             _leafCohort.IncreaseAge(_age);
             _phytomerCohort.IncreaseAge(_age);
             _phytomerCohort.Add(_age,_newPhytomerCohort.IncreaseAge());
@@ -270,13 +273,13 @@ namespace UnlimitedGreen
                         {
                             var newFruit = new EntityFruit() { PhyllotaxisRotation = rotationResult };
                             entityFruitsList.Add(newFruit);
-                            _fruitCohort.Add(_age,newFruit);
+                            _fruitCohort.Add(newFruit);
                         }
                         else if (phyllotaxis.BeerOrgan == BeerOrgan.Flower)
                         {
                             var newFlower = new EntityFlower() { PhyllotaxisRotation = rotationResult };
                             entityFlowersList.Add(newFlower);
-                            _flowerCohort.Add(_age,newFlower);
+                            _flowerCohort.Add(newFlower);
                         }
                         else if (phyllotaxis.BeerOrgan == BeerOrgan.Bud)
                         {
@@ -330,6 +333,71 @@ namespace UnlimitedGreen
             }
 
             _axisWithBud = newAxisWithBud;
+        }
+
+        public void GizmosDraw()
+        {
+            var drawRadius = 0.1f;
+            // 画种子
+            Gizmos.color = Color.magenta;
+            Gizmos.DrawWireSphere(Vector3.zero,drawRadius*1.2f);
+            // 画各个的轴
+            foreach (var axis in _axisWithBud) // 【轴】
+            {
+                var gizmosDrawer = new GizmosDrawer(axis.Position,drawRadius);
+                
+                Gizmos.color = Color.red;
+                Gizmos.DrawLine(axis.Position,axis.Position+axis.Direction);
+                Gizmos.color = Color.green;
+                Gizmos.DrawLine(axis.Position,axis.Position+axis.SubDirection);
+                
+                foreach (var phytomer in axis.EntityPhytomers) // 【叶元】
+                {
+                    Gizmos.color = Color.red;
+                    Gizmos.DrawLine(phytomer.Position,phytomer.Position+phytomer.Direction);
+                    Gizmos.color = Color.green;
+                    Gizmos.DrawLine(phytomer.Position,phytomer.Position+phytomer.SubDirection);
+                    
+                    gizmosDrawer.Draw(phytomer.Position);
+                    foreach (var entityLeaf in phytomer.AxillaryLeaves)
+                    {
+                        var direction = GenericFunctions.PhyllotaxisToVerticalDirection(entityLeaf.PhyllotaxisRotation,
+                            phytomer.Direction, phytomer.SubDirection);
+                        var position = phytomer.Position + direction * 0.2f;
+                        Gizmos.color = Color.green;
+                        Gizmos.DrawWireCube(position,new Vector3(drawRadius*0.7f,drawRadius*0.7f,drawRadius*0.7f));
+
+                    }
+                    Handles.Label(phytomer.Position,
+                        $"Storage:{phytomer.StoragePointer}\n" +
+                        $"radius:{phytomer.Radius}\n" +
+                        $"");
+                }
+            }
+        }
+
+        private class GizmosDrawer
+        {
+            private Vector3 _prePosition;
+            private Vector3 _postPosition;
+            private float _raduis;
+            public GizmosDrawer(Vector3 beginPosition,float radius)
+            {
+                _postPosition = beginPosition;
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawWireSphere(beginPosition,radius*1.1f);
+                _raduis = radius;
+            }
+
+            public void Draw(Vector3 position)
+            {
+                _prePosition = _postPosition;
+                _postPosition = position;
+                Gizmos.color = Color.blue;
+                Gizmos.DrawLine(_prePosition,_postPosition);
+                Gizmos.color = Color.cyan;
+                Gizmos.DrawWireSphere(position,_raduis);
+            }
         }
     }
 }

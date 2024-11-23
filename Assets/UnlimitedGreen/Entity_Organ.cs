@@ -10,7 +10,7 @@ namespace UnlimitedGreen
         public HashSet<T> StoragePointer;
         public override string ToString()
         {
-            return $" [ V:{PhyllotaxisRotation},B:{Biomass},S:{StoragePointer is not null} ] ";
+            return $" [V:{PhyllotaxisRotation},B:{Biomass},S:{(StoragePointer is not null? "⚪" : "×")}] ";
         }
     }
 

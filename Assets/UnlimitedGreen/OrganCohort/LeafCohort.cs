@@ -11,7 +11,6 @@ namespace UnlimitedGreen
         {
             public HashSet<EntityLeaf> EntityLeaves;
             public int BirthCycle;
-
             public LeafCohortData(HashSet<EntityLeaf> entityLeaves,int birthCycle)
             {
                 EntityLeaves = entityLeaves;
@@ -20,10 +19,10 @@ namespace UnlimitedGreen
         }
         
         // 数据存储
-        private Queue<LeafCohortData>[] _sinkSourceData;
-        private Queue<LeafCohortData>[] _sourceData;
-        private HashSet<EntityLeaf>[] _newData;
-        private LeafData _leafData;
+        private readonly Queue<LeafCohortData>[] _sinkSourceData;
+        private readonly Queue<LeafCohortData>[] _sourceData;
+        private readonly HashSet<EntityLeaf>[] _newData;
+        private readonly LeafData _leafData;
 
         public LeafCohort(LeafData leafData)
         {
@@ -170,6 +169,89 @@ namespace UnlimitedGreen
                 t.Dequeue();
             }
         }
-        
+
+        public override string ToString()
+        {
+            // 基本参数
+            var s = "";
+            s += "LEAF\n";
+            s +=
+                $"\tBASEDATA\n\t\te={_leafData.LeafAllometryE}, k={_leafData.ProjectionArea}, Sp={_leafData.ProjectionArea}, " +
+                $"r={_leafData.WaterUseEfficiency}, sourceValidCycle={_leafData.SourceValidCycles}\n";
+            s += "\tSINK\n";
+            
+            // cycle 的 表格头
+            s += "\t\t\t";
+            for (var phi = 1; phi <= _leafData.SinkValidCycles; phi++)
+            {
+                s += $"c{phi}\t\t";
+            }
+            
+            // 生理年龄和具体的值
+            s += "\n";
+            for (var phi = 1; phi <= _leafData.MaxPhysiologicalAge; phi++)
+            {
+                s += $"\t\tp{phi}\t";
+                for (var cycle = 1; cycle <= _leafData.SinkValidCycles; cycle++)
+                {
+                    s += $"{_leafData.SinkFunction(phi, cycle):F2}\t";
+                }
+                s += "\n";
+            }
+            
+            // 新
+            s += "\tNEW\n";
+
+            for (var phi = 1; phi <= _leafData.MaxPhysiologicalAge; phi++)
+            {
+                s += $"\t\tPhy={phi}; contents=";
+                var array = _newData[phi-1];
+                foreach (var entityLeaf in array)
+                {
+                    s += $"{entityLeaf} ";
+                }
+                s += "\n";
+                
+            }
+            
+            // 源汇
+            s += "\tSINK-SOURCE\n";
+            for (var phi = 1; phi <= _leafData.MaxPhysiologicalAge; phi++)
+            {
+                s += $"\t\tPhy={phi}; content=\n";
+                var queue = _sinkSourceData[phi-1];
+                foreach (var leafCohortData in queue)
+                {
+                    s += $"\t\t\tBirthCycle={leafCohortData.BirthCycle}: ";
+                    var leafs = leafCohortData.EntityLeaves;
+                    foreach (var leaf in leafs)
+                    {
+                        s+=$"{leaf} ";
+                    }
+                    s += "\n";
+                }
+            }
+            
+            // 源
+            s += "\tSOURCE\n";
+            for (var phi = 1; phi <= _leafData.MaxPhysiologicalAge; phi++)
+            {
+                s += $"\t\tPhy={phi}; content=\n";
+                var queue = _sourceData[phi - 1];
+                foreach (var leafCohortData in queue)
+                {
+                    s += $"\t\t\tBirthCycle={leafCohortData.BirthCycle}: ";
+                    var leafs = leafCohortData.EntityLeaves;
+                    foreach (var leaf in leafs)
+                    {
+                        s += $"{leaf} ";
+                    }
+                    s += "\n";
+                }
+            }
+            
+            
+            return s;
+        }
     }
 }

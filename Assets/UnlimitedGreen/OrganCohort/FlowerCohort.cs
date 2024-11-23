@@ -28,14 +28,9 @@ namespace UnlimitedGreen
         }
         
         // 增加对象
-        public void Add(int plantAge,[NotNull] EntityFlower entityFlower)
+        public void Add([NotNull] EntityFlower entityFlower)
         {
-            if (_newData.BirthCycle < plantAge) // 还是上回合的数据的话
-            {
-                _newData = new FlowerCohortData() {BirthCycle = plantAge,EntityFlowers = new HashSet<EntityFlower>()};
-            }
-            //OPT: 如果在这进行存储_newData的更新的话，会每次需要额外传入一个植物年龄，在逻辑上也有点奇怪，能改吗。
-            
+            //OPT: 我还是觉得这个推入的解决方案不是最好的，参考LeafCohort的解决方法
             _newData.EntityFlowers.Add(entityFlower);
             entityFlower.StoragePointer = _newData.EntityFlowers;
         }
@@ -88,6 +83,8 @@ namespace UnlimitedGreen
         // 年龄增长
         public void IncreaseAge(int plantAge)
         {
+            _newData = new FlowerCohortData()
+                { BirthCycle = plantAge + 1, EntityFlowers = new HashSet<EntityFlower>() };
             if (!_data.TryPeek(out var flowerCohortData)) return;
             if (GenericFunctions.CalculateAge(plantAge, flowerCohortData.BirthCycle) < _flower.ValidCycles) return;
             
@@ -133,7 +130,7 @@ namespace UnlimitedGreen
             var array = _data.ToArray();
             foreach (var i in array)
             {
-                returnString += $"\t\ttbirthCycles={i.BirthCycle};contents=";
+                returnString += $"\t\tbirthCycles={i.BirthCycle};contents=";
                 if (!i.EntityFlowers.Any())
                 {
                     returnString += "'NULL'\n";

@@ -18,9 +18,16 @@ namespace UnlimitedGreen
         public void SetTopology(Vector3 position,Vector3 direction)
         {
             Position = position;
-            Direction = direction;
+            Direction = direction.normalized;
             
             // 从 direction 计算出一个与它垂直且在水平面的向量
+            if (Mathf.Approximately(direction.y, 1.0f) | Mathf.Approximately(direction.y, -1.0f))
+            {
+                SubDirection = Vector3.forward;
+                // OPT:这样的解决方法，或者整个解决方案都会导致现在的副朝向永远是固定方向的，而不具有随机性，我想将这个随机性给叶轴功能加上
+                return;
+            }
+            
             SubDirection = new Vector3(direction.z, 0, -direction.x).normalized;
 
         }

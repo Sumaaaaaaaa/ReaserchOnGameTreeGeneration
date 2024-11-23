@@ -11,12 +11,12 @@ namespace UnlimitedGreen
         
         protected Automaton(int[] repeatTimes, float[,] adjMat, T[] vertices)
         {
-            #if UNITY_EDITOR
-            DataCheck();
-            #endif
             RepeatTimes = repeatTimes;
             AdjMat = adjMat;
             Vertices = vertices; // TODO: 这个还没有进行检查
+            #if UNITY_EDITOR
+            DataCheck();
+            #endif
         }
   
         // 数据检查，如途中查找到错误会报错
