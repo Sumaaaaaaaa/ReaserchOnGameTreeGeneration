@@ -244,6 +244,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22e26b3ac62346399dfc9288e5d69c2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RandomSeed: 245
 --- !u!4 &1478233572
 Transform:
   m_ObjectHideFlags: 0

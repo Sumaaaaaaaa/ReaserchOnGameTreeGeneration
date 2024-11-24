@@ -121,8 +121,9 @@ namespace UnlimitedGreen
                 allocateArray[i] = allocateBiomass;
             }
 
-            foreach (var processData in _processQueue)
+            while (_processQueue.Count != 0)
             {
+                var processData = _processQueue.Dequeue();
                 var allometryB = _phytomerData.PhytomerAllometryDatas[processData.PhysiologicalAge - 1].Item1;
                 var allometryY = _phytomerData.PhytomerAllometryDatas[processData.PhysiologicalAge - 1].Item2;
                 var allocateBiomass = allocateArray[processData.PhysiologicalAge - 1];
@@ -177,7 +178,24 @@ namespace UnlimitedGreen
             
             
         }
-        //结束占位符
-        
+
+        public override string ToString()
+        {
+            var s = "";
+            s += "NEW-PHYTOMER\n\tQUEUE\n";
+            foreach (var processData in _processQueue)
+            {
+                s += $"[A:{processData.Axis.GetHashCode()}, P:{processData.Phytomer.GetHashCode()}, " +
+                     $"EP:{processData.EntityPhytomer.GetHashCode()},Phy:{processData.PhysiologicalAge}, " +
+                     $"I:{processData.IndexOnAxis}]";
+            }
+            
+            /*for (var phi = 1; phi <= _phytomerData.MaxPhysiologicalAge; phi++)
+            {
+                _data[phi]
+            }*/
+
+            return s;
+        }
     }
 }

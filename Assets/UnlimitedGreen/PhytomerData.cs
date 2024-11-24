@@ -43,7 +43,7 @@ namespace UnlimitedGreen
         /// <param name="sinkFunction">汇方程，输入：生理年龄、年龄，返回：汇强度</param>
         /// <param name="phytomerAllometryDatas">最大生理年龄数量的异速生长参数{(b1,y1),(b2,y2)...}</param>
         /// <param name="phytomerTopologyFunc">叶元拓扑学方法，输入：AxisOrder, PrePosition, PreDirection, Length。返回的数据的含义：(NewPosition, NewDirection)</param>
-        /// <param name="axisTopologyFunc">叶元侧生轴拓扑学方法，输入：AxisOrder, PreDirection, VerticleDirectionAfterPhyllotaxisRotation,NewDirection。返回：轴的朝向</param>
+        /// <param name="axisTopologyFunc">叶元侧生轴拓扑学方法，输入：AxisOrdeVer, PreDirection, VerticleDirectionAfterPhyllotaxisRotation,NewDirection。返回：轴的朝向</param>
         /// <exception cref="AggregateException">不符合模型的数值定义</exception>
         public PhytomerData(
             int maxPhysiologicalAge,

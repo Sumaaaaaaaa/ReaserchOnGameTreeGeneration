@@ -256,10 +256,9 @@ namespace UnlimitedGreen
                         axis.PhyllotaxisRotation %= 360;
                         var rotationResult = (
                             axis.PhyllotaxisRotation
-                            + newPhytomer.PhyllotaxisRandomValue * 180 *
-                            (_random.Next() * 2 - 1)
-                        ) % 360;
-                        //TODO: 我才发现的Random正确的调用出一个随机float的方法是使用Next()，而不是使用NextDouble(),需要将所有错误使用的部分全部修正。
+                            + newPhytomer.PhyllotaxisRandomValue * 180f *
+                            ((float)_random.NextDouble() * 2.0f - 1.0f)
+                        ) % 360f;
                         
                         if (phyllotaxis.HasLeaf)
                         {
@@ -337,7 +336,7 @@ namespace UnlimitedGreen
 
         public void GizmosDraw()
         {
-            var drawRadius = 0.1f;
+            var drawRadius = 0.02f;
             // 画种子
             Gizmos.color = Color.magenta;
             Gizmos.DrawWireSphere(Vector3.zero,drawRadius*1.2f);
@@ -346,17 +345,50 @@ namespace UnlimitedGreen
             {
                 var gizmosDrawer = new GizmosDrawer(axis.Position,drawRadius);
                 
-                Gizmos.color = Color.red;
-                Gizmos.DrawLine(axis.Position,axis.Position+axis.Direction);
-                Gizmos.color = Color.green;
-                Gizmos.DrawLine(axis.Position,axis.Position+axis.SubDirection);
+                // Gizmos.color = Color.red;
+                //Gizmos.DrawLine(axis.Position,axis.Position+axis.Direction);
+                // Gizmos.color = Color.green;
+                // Gizmos.DrawLine(axis.Position,axis.Position+axis.SubDirection);
                 
                 foreach (var phytomer in axis.EntityPhytomers) // 【叶元】
                 {
-                    Gizmos.color = Color.red;
-                    Gizmos.DrawLine(phytomer.Position,phytomer.Position+phytomer.Direction);
-                    Gizmos.color = Color.green;
-                    Gizmos.DrawLine(phytomer.Position,phytomer.Position+phytomer.SubDirection);
+                    // Gizmos.color = Color.red;
+                    //Gizmos.DrawLine(phytomer.Position,phytomer.Position+phytomer.Direction);
+                    // Gizmos.color = Color.green;
+                    // Gizmos.DrawLine(phytomer.Position,phytomer.Position+phytomer.SubDirection);
+                    
+                    gizmosDrawer.Draw(phytomer.Position);
+                    foreach (var entityLeaf in phytomer.AxillaryLeaves)
+                    {
+                        var direction = GenericFunctions.PhyllotaxisToVerticalDirection(entityLeaf.PhyllotaxisRotation,
+                            phytomer.Direction, phytomer.SubDirection);
+                        var position = phytomer.Position + direction * 0.2f;
+                        Gizmos.color = Color.green;
+                        Gizmos.DrawWireCube(position,new Vector3(drawRadius*0.7f,drawRadius*0.7f,drawRadius*0.7f));
+
+                    }
+                    Handles.Label(phytomer.Position,
+                        $"Storage:{phytomer.StoragePointer}\n" +
+                        $"radius:{phytomer.Radius}\n" +
+                        $"");
+                }
+            }
+
+            foreach (var axis in _axisNoBud)
+            {
+                var gizmosDrawer = new GizmosDrawer(axis.Position,drawRadius);
+                
+                // Gizmos.color = Color.red;
+                //Gizmos.DrawLine(axis.Position,axis.Position+axis.Direction);
+                // Gizmos.color = Color.green;
+                // Gizmos.DrawLine(axis.Position,axis.Position+axis.SubDirection);
+                
+                foreach (var phytomer in axis.EntityPhytomers) // 【叶元】
+                {
+                    //Gizmos.color = Color.red;
+                    //Gizmos.DrawLine(phytomer.Position,phytomer.Position+phytomer.Direction);
+                    // Gizmos.color = Color.green;
+                    // Gizmos.DrawLine(phytomer.Position,phytomer.Position+phytomer.SubDirection);
                     
                     gizmosDrawer.Draw(phytomer.Position);
                     foreach (var entityLeaf in phytomer.AxillaryLeaves)

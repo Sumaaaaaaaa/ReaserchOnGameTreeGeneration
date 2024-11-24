@@ -28,7 +28,7 @@ namespace UnlimitedGreen
             _birthCycle = birthCycle;
             _random = random;
             _entityDualScaleAutomaton = new EntityDualScaleAutomaton
-                (dualScaleAutomaton, random, physiologicalAge - 1);
+                (dualScaleAutomaton, random, _physiologicalAge - 1);
         }
 
         internal bool Expansion(Vector3 worldPosition,int planetAge,out (Phytomer phytomer,int indexNow)? phytomer)
@@ -46,7 +46,6 @@ namespace UnlimitedGreen
             var age = GenericFunctions.CalculateAge(planetAge, _birthCycle);
             
             // 节律判定
-            
             if (_bud.RhythmRatio[(age - 1) % _bud.RhythmRatio.Length] == false)
             {
                 return true;
@@ -55,9 +54,12 @@ namespace UnlimitedGreen
             // 启动判定
             if (!_isBranched)
             {
-                var ratio = _bud.BranchingIntensity(_parentPhysiologicalAge,
-                    _physiologicalAge, age); //输入：父体生理年龄，本体生理年龄，个体年龄
-                if (ratio < 0) return false;
+                var ratio = _bud.BranchingIntensity(age,_parentPhysiologicalAge); //输入：父体生理年龄，本体生理年龄，个体年龄
+                if (ratio < 0)
+                {
+                    _isViability = false;
+                    return false;
+                }
                 if (_random.NextDouble() > ratio)
                 {
                     return true;
@@ -66,14 +68,14 @@ namespace UnlimitedGreen
             }
             
             // 存活判定
-            if (_random.NextDouble() > _bud.MortalityRatio(_physiologicalAge))
+            if (_random.NextDouble() > _bud.ViabilityRatio(age))
             {
                 _isViability = false;
                 return false;
             }
             
             // 随机处理
-            if (_random.NextDouble() > _bud.RandomRatio(_physiologicalAge))
+            if (_random.NextDouble() > _bud.RandomRatio(age))
             {
                 return true;
             }

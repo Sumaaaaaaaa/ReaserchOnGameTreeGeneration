@@ -28,6 +28,10 @@ namespace UnlimitedGreen
         public int AddPhysiologicalAge;
         public Phyllotaxis(float rotation, bool hasLeaf,BeerOrgan beerOrgan,int addPhysiologicalAge = 0)
         {
+            if (rotation == 0)
+            {
+                throw new AggregateException("叶旋不能为0，一定要产生一定的旋转");
+            }
             Rotation = rotation;
             HasLeaf = hasLeaf;
             BeerOrgan = beerOrgan;
@@ -59,6 +63,17 @@ namespace UnlimitedGreen
 
             PhyllotaxisRandomValue = phyllotaxisRandomValue;
             Phyllotaxis = phyllotaxis;
+        }
+
+        public override string ToString()
+        {
+            var s = $"[R{PhyllotaxisRandomValue:F2}->";
+            foreach (var p in Phyllotaxis)
+            {
+                s += $"(R:{p.Rotation:F2},L:{(p.HasLeaf?"⚪":"×")},B:{p.BeerOrgan}{(p.BeerOrgan==BeerOrgan.Bud?$"+{p.AddPhysiologicalAge}":"")})";
+            }
+            s += "]";
+            return s;
         }
     }
 }
