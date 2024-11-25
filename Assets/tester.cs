@@ -5,6 +5,8 @@ public class tester: MonoBehaviour
 {
     private Plant _plant;
     public int RandomSeed;
+    public float DrawRadio;
+    public bool ShowData;
     private void Start()
     {
         UnlimitedGreen.UnlimitedGreen.Test();
@@ -22,6 +24,7 @@ public class tester: MonoBehaviour
 
         Vector3 axisTopologyFunc(int axisOrder, Vector3 preDirection, Vector3 VerticleDirectionAfterPhyllotaxisRotation)
         {
+            return (preDirection + VerticleDirectionAfterPhyllotaxisRotation).normalized;
             return VerticleDirectionAfterPhyllotaxisRotation;
         }
         
@@ -85,7 +88,7 @@ public class tester: MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        _plant?.GizmosDraw();
+        _plant?.GizmosDraw(DrawRadio,ShowData);
     }
 
     private void Update()
