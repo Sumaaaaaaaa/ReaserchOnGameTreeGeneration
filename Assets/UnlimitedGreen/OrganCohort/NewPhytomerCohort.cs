@@ -9,7 +9,6 @@ namespace UnlimitedGreen
 {
     internal class NewPhytomerCohort
     {
-        // TODO: 测试
         // 内用结构
         private struct ProcessData
         {
@@ -155,7 +154,6 @@ namespace UnlimitedGreen
                 var newPosition = result.Item1;
                 var newDirection = result.Item2.normalized;
                 
-                //TODO: 需要在显式处表明、当前使用的转换方式最好不要让新的朝向过大，特别是接近旧朝向的几乎反面，这可能会让副朝向的计算出现奇怪的结果
                 var newSubdirection = GenericFunctions.NewSubDirection(preDirection, newDirection, preSubDirection).normalized;
 
                 processData.EntityPhytomer.Direction = newDirection;
@@ -170,7 +168,6 @@ namespace UnlimitedGreen
                         newDirection, newSubdirection);
                     
                     // 自定义方法的执行
-                    // AxisOrder, PreDirection, VerticleDirectionAfterPhyllotaxisRotation,NewDirection。返回：轴的朝向
                     var axisDirection = _phytomerData.AxisTopologyFunc(axis.AxisOrder, newDirection, verticalDirection).normalized;
                     axis.SetTopology(newPosition,axisDirection);
                 }

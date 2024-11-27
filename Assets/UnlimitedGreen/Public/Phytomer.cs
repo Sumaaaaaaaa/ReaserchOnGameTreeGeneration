@@ -30,7 +30,7 @@ namespace UnlimitedGreen
         {
             if (rotation == 0)
             {
-                throw new AggregateException("叶旋不能为0，一定要产生一定的旋转");
+                throw new ArgumentException("'rotation' value cannot be zero. It must create a valid rotation.");
             }
             Rotation = rotation;
             HasLeaf = hasLeaf;
@@ -48,7 +48,7 @@ namespace UnlimitedGreen
         /// </summary>
         /// <param name="phyllotaxisRandomValue">对于所有的出现在植物上的叶轴的旋转量做出随机量定义</param>
         /// <param name="phyllotaxis">叶轴定义</param>
-        /// <exception cref="AggregateException">定义不符合要求</exception>
+        /// <exception cref="ArgumentException">定义不符合要求</exception>
         public Phytomer(float phyllotaxisRandomValue,[NotNull] Phyllotaxis[] phyllotaxis)
         {
             
@@ -56,8 +56,7 @@ namespace UnlimitedGreen
             // 'phyllotaxisRandomValue'旋转随机值需要在0~1之间
             if (phyllotaxisRandomValue > 1.0f | phyllotaxisRandomValue < 0.0f)
             {
-                throw new AggregateException("'phyllotaxisRandomValue'需要在0~1的范围内，以说明随机比例");
-                //TODO: 翻译成英语
+                throw new ArgumentException("'phyllotaxisRandomValue' must be within the range of 0 to 1 to specify a valid random proportion.");
             }
             #endif
 

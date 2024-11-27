@@ -40,36 +40,35 @@ namespace UnlimitedGreen
             // 最大生理年龄需要>=1
             if (maxPhysiologicalAge < 1)
             {
-                throw new AggregateException("'MaxPhysiologicalAge'需要是一个大于等于0的值");
+                throw new ArgumentException("'maxPhysiologicalAge' must be greater than or equal to 1.");
             }
             // 叶子的异速生长参数e 必须 > 0 
             if (leafAllometryE <= 0)
             {
-                throw new AggregateException("'leafAllometryE'必须传入一个大于0的数以描述叶子的厚度");
+                throw new ArgumentException("'leafAllometryE' must be greater than 0 to accurately describe leaf thickness.");
             }
 
             if (extinctionCoefficient <= 0)
             {
-                throw new AggregateException("'extinctionCoefficient'(即K)需要是一个>0的值");
+                throw new ArgumentException("'extinctionCoefficient' (K) must be greater than 0.");
             }
             if (projectionArea <= 0)
             {
-                throw new AggregateException("'projectionArea'(即Sp)需要是一个>0的值");
+                throw new ArgumentException("'projectionArea' (Sp) must be greater than 0.");
             }
             if (waterUseEfficiency <= 0)
             {
-                throw new AggregateException("'waterUseEfficiency'(即r)需要是一个>0的值");
+                throw new ArgumentException("'waterUseEfficiency' (r) must be greater than 0.");
             }
             // 汇有效周期需要 > 0
             if (sinkValidCycles <= 0)
             {
-                throw new AggregateException("'sinkValidCycles'需要是一个大于0的值");
+                throw new ArgumentException("'sinkValidCycles' must be greater than 0.");
             }
             // 源有效周期需要 >= 汇有效周期
-            //TODO: 需要确认源有效周期 = 汇有效周期 时后面的迭代能否正常的运行。
             if (sourceValidCycles < sinkValidCycles)
             {
-                throw new AggregateException("'sourceValidCycles'需要大于等于'sinkValidCycles'");
+                throw new ArgumentException("'sourceValidCycles' must be greater than or equal to 'sinkValidCycles'.");
             }
             // 确认汇函数有效
             for (var i = 1; i <= maxPhysiologicalAge; i++) // 生理年龄
@@ -79,11 +78,10 @@ namespace UnlimitedGreen
                     if (sinkFunction(i, j) < 0)
                     {
                         throw new ArgumentException(
-                            "'sinkFunction'对于生理年龄[1,maxPhysiologicalAge]和周期年龄[1,sinkValidCycles]必须都获得有效的大于等于0的汇值");
+                            "'sinkFunction' must return valid non-negative values for physiological ages in 1~maxPhysiologicalAge and cycle ages in 1~sinkValidCycles.");
                     }
                 }
             }
-            //TODO: 翻译成标准英语
 #endif
             MaxPhysiologicalAge = maxPhysiologicalAge;
             

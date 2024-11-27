@@ -70,8 +70,8 @@ public class tester: MonoBehaviour
             extinctionCoefficient: 1f, // 消光系数
             leafAllometryE: 1f, //叶子厚度 e 
             
-            leafSourceValidCycles: 3, // 叶 - 源 - 有效周期 ※※※※※※※※※
-            leafSinkValidCycles: 2, // 叶 - 汇 - 有效周期 ※※※※※※※※※
+            leafSourceValidCycles:5, // 叶 - 源 - 有效周期 ※※※※※※※※※
+            leafSinkValidCycles: 5, // 叶 - 汇 - 有效周期 ※※※※※※※※※
             leafSinkFunction: (phi, age) => { return 1.0f; }, // 叶 - 汇 - 函数 ※※※※※※※※※
             
             phytomerValidcycles: 2, // 叶元 - 汇 - 有效周期 ※※※※※※※※※

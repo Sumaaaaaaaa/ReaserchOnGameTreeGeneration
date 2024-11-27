@@ -15,7 +15,6 @@ namespace UnlimitedGreen
         protected T Automaton;
         
         protected EntityAutomaton(T automaton,Random random, int entranceIndex)
-        //TODO: 入口的实现的还没被规划。
         {
             Automaton = automaton;
             Random = random;

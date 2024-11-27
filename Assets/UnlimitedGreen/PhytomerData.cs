@@ -44,7 +44,7 @@ namespace UnlimitedGreen
         /// <param name="phytomerAllometryDatas">最大生理年龄数量的异速生长参数{(b1,y1),(b2,y2)...}</param>
         /// <param name="phytomerTopologyFunc">叶元拓扑学方法，输入：AxisOrder, PrePosition, PreDirection, Length。返回的数据的含义：(NewPosition, NewDirection)</param>
         /// <param name="axisTopologyFunc">叶元侧生轴拓扑学方法，输入：AxisOrdeVer, PreDirection, VerticleDirectionAfterPhyllotaxisRotation,NewDirection。返回：轴的朝向</param>
-        /// <exception cref="AggregateException">不符合模型的数值定义</exception>
+        /// <exception cref="ArgumentException">不符合模型的数值定义</exception>
         public PhytomerData(
             int maxPhysiologicalAge,
             int validCycles,
@@ -58,13 +58,12 @@ namespace UnlimitedGreen
             //最大的生理年龄不能小于1
             if (maxPhysiologicalAge < 1)
             {
-                throw new AggregateException("The value of 'maxPhysiologicalAge' must be greater than or equal to 1.");
+                throw new ArgumentException("The value of 'maxPhysiologicalAge' must be greater than or equal to 1.");
             }
             // 有效周期>=1
             if (validCycles < 1)
             {
-                throw new AggregateException("ValidCycles需要>=1");
-                //TODO: 翻译成英语
+                throw new ArgumentException("'validCycles' must be greater than or equal to 1.");
             }
             
             // 测试传入的sinkFunction有效
@@ -74,15 +73,14 @@ namespace UnlimitedGreen
                 {
                     if (sinkFunction(i, j) < 0)
                     {
-                        throw new AggregateException("The value produced by 'sinkFunction' with 输入 1~'maxPhysiologicalAge' must be greater than or equal to 0."); 
-                        // TODO: 标准的英语
+                        throw new ArgumentException("'sinkFunction' must return values greater than or equal to 0 for inputs ranging from 1 to 'maxPhysiologicalAge'."); 
                     }
                 }
             }
             // 异速生长参数的数量不对
             if (phytomerAllometryDatas.Length != maxPhysiologicalAge)
             {
-                throw new AggregateException("异速生长参数的数量需与最大升力年龄相同，以对所有的生理年龄的叶元进行定义");
+                throw new ArgumentException("The number of allometry parameters must match 'maxPhysiologicalAge' to define phytomers for all physiological ages.");
                 // 翻译成英语
             }
             // 异速生长的b 要求 > 0
@@ -90,7 +88,7 @@ namespace UnlimitedGreen
             {
                 if (i.Item1 <= 0)
                 {
-                    throw new AggregateException("异速生长的参数b必须>0。");
+                    throw new ArgumentException("The allometry parameter 'b' must be greater than 0.");
                 }
             }
             

@@ -34,8 +34,8 @@ namespace UnlimitedGreen
         private int _age = 0;
         private float _biomassStorage = 0.0f;
         private List<Axis> _axisWithBud = new List<Axis>();
-        private List<Axis> _axisNoBud = new List<Axis>(); //TODO: 确认这个实现方式是不是最好的
-        //private List<Axis> _updatedAxis; //TODO: 确认这个实现方式是不是最好的
+        private readonly List<Axis> _axisNoBud = new List<Axis>(); 
+        //private List<Axis> _updatedAxis; 
 
 
         /// <summary>
@@ -44,6 +44,7 @@ namespace UnlimitedGreen
         /// <param name="randomSeed">随机种</param>
         /// <param name="maxPhysiologicalAge">最大的生理年龄</param>
         /// <param name="initialBiomass">初始的生物质量，即种子所持有的生物质量</param>
+        /// <param name="startDireciton">初始朝向，本地空间</param>
         /// <param name="waterUseEfficiency">水利用率 r</param>
         /// <param name="projectionArea">投影面积Sp</param>
         /// <param name="extinctionCoefficient">消光系数 K</param>
@@ -54,13 +55,13 @@ namespace UnlimitedGreen
         /// <param name="phytomerValidcycles">叶元的汇有效周期数</param>
         /// <param name="phytomerSinkFunction">叶元的汇函数——输入：生理年龄、年龄，返回：汇强度</param>
         /// <param name="phytomerAllometryDatas">叶元的异速生长参数集，根据生理年龄{(b1,y1),(b2,y2)...}</param>
-        /// <param name="phytomerTopologyFunc">叶元拓扑学方法，输入：AxisOrder, PrePosition, PreDirection, Length。返回的数据的含义：(NewPosition, NewDirection)</param>
+        /// <param name="phytomerTopologyFunc">叶元拓扑学方法，输入：AxisOrder, PrePosition, PreDirection, Length。返回的数据的含义：(NewPosition, NewDirection)（不要让新的朝向过大，特别是接近旧朝向的几乎反面，这可能会让副朝向的计算出现奇怪的结果）</param>
         /// <param name="axisTopologyFunc">叶元侧生轴拓扑学方法，输入：AxisOrder, PreDirection, VerticleDirectionAfterPhyllotaxisRotation。返回：轴的朝向NewDirection</param>
         /// <param name="dualScaleAutomaton">双尺度自动机，其内部的自动机数量需要与生理年龄相匹配</param>
         /// <param name="buds">芽的数据定义，定义的数量需与生理年龄相同</param>
         /// <param name="flower">定义花的参数</param>
         /// <param name="fruit">定义果的参数</param>
-        /// <exception cref="AggregateException">不符合模型的输入要求</exception>
+        /// <exception cref="ArgumentException">不符合模型的输入要求</exception>
         public Plant(
             int randomSeed,
             int maxPhysiologicalAge, 
@@ -93,23 +94,22 @@ namespace UnlimitedGreen
 #if UNITY_EDITOR
             if (maxPhysiologicalAge <= 0)
             {
-                throw new AggregateException("'maxPhysiologicalAge'最大生理年龄要>=0");
+                throw new ArgumentException("'maxPhysiologicalAge' must be greater than or equal to 0.");
             }
 
             if (initialBiomass <= 0)
             {
-                throw new AggregateException("初始的生物质量需要>0，以能够使植物能够开始生长");
-                // TODO: 英语
+                throw new ArgumentException("'initialBiomass' must be greater than 0 to enable plant growth.");
             }
 
             if (dualScaleAutomaton.Count != maxPhysiologicalAge)
             {
-                throw new AggregateException("'dualScaleAutomaton'的内自动机尺度数量应该等于与最大生理年龄");
+                throw new ArgumentException("The number of scales in 'dualScaleAutomaton' should be equal to 'maxPhysiologicalAge'.");
             }
 
             if (buds.Length != maxPhysiologicalAge)
             {
-                throw new AggregateException("'buds'的定义数量应该等于最大生理年龄");
+                throw new ArgumentException("The number of defined 'buds' should be equal to 'maxPhysiologicalAge'.");
             }
 #endif
             _random = new Random(randomSeed);
@@ -143,10 +143,6 @@ namespace UnlimitedGreen
             _dualScaleAutomaton = dualScaleAutomaton;
 
             _buds = buds;
-
-            //TODO: 有芽轴、无芽轴的 初始化
-            //TODO: 更新轴的 初始化
-            //TODO: 起始轴是否是需要的。
             
             // 创建一个生理年龄为1的新芽，
             var firstBud = new EntityBud(
@@ -194,7 +190,6 @@ namespace UnlimitedGreen
             sumSink += _leafCohort.CalculateSinkSum(_age);
             sumSink += _newPhytomerCohort.CalculateSinkSum(_age);
             sumSink += _phytomerCohort.CalculateSinkSum(_age);
-            Debug.Log($"汇总值为 {sumSink}。");
             
             // 主要生长
             _newPhytomerCohort.Allocate(_biomassStorage,sumSink);
@@ -207,7 +202,6 @@ namespace UnlimitedGreen
             
             // 生产
             var producedBiomass = _leafCohort.Production(environmentParameter);
-            Debug.Log($"生产的Biomass = {producedBiomass}");
             _biomassStorage = producedBiomass;
             
             // 年龄增长操作
@@ -242,7 +236,7 @@ namespace UnlimitedGreen
                 if (result is not null)
                 {
                     var newPhytomer = result.Value.phytomer;
-                    var physiologicalAge = result.Value.indexNow + 1; // TODO: 确认这样用可以吗
+                    var physiologicalAge = result.Value.indexNow + 1;
                     
                     var entityLeavesList = new List<EntityLeaf>(newPhytomer.Phyllotaxis.Length);
                     var entityFruitsList = new List<EntityFruit>(newPhytomer.Phyllotaxis.Length);
@@ -285,9 +279,8 @@ namespace UnlimitedGreen
                             var newPhysiologicalAge = physiologicalAge + phyllotaxis.AddPhysiologicalAge;
                             if (newPhysiologicalAge > _maxPhysiologicalAge)
                             {
-                                Debug.LogError("在Organogenesis时，出现了计算后的生理年龄超过了最大生理年龄的情况，请确认自动机中的Phytomer是否有设计错误的地方");
+                                Debug.LogError("During Organogenesis, the calculated physiological age exceeded the maximum physiological age. Please check for potential design errors in the Phytomer configuration within the automaton.");
                                 //OPT: 这边的这个DEBUG信息可以更加的优化。以表达更明确的报错信息
-                                //TODO: 翻译成英语
                                 continue;
                             }
 

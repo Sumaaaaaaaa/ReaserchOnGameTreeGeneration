@@ -24,7 +24,6 @@ namespace UnlimitedGreen
         /// <returns></returns>
         internal static Vector3 NewSubDirection(Vector3 preDirection, Vector3 newDirection, 
             Vector3 preSubDirection)
-        // TODO: 这个应该直接放在原本的类中，而不用这样额外定义
         {
             Quaternion rotation = Quaternion.FromToRotation(preDirection, newDirection);
             Matrix4x4 transformationMatrix = Matrix4x4.Rotate(rotation);
@@ -41,7 +40,6 @@ namespace UnlimitedGreen
         /// <returns></returns>
         internal static Vector3 PhyllotaxisToVerticalDirection
             (float phyllotaxisDirection, Vector3 direction, Vector3 subDirection)
-        // TODO: 这个应该直接放在原本的类中，而不用这样额外定义
         {
             Quaternion rotation = Quaternion.AngleAxis(phyllotaxisDirection, direction);
             return rotation * subDirection;
