@@ -5,8 +5,6 @@ public class tester: MonoBehaviour
 {
     private Plant _plant;
     public int RandomSeed;
-    public float DrawRadio;
-    public bool ShowData;
 
     private PlantRenderer _plantRenderer;
     private void Start()
@@ -68,7 +66,7 @@ public class tester: MonoBehaviour
             initialBiomass: 1,
             startDireciton: Vector3.up, 
             waterUseEfficiency: 1f, // 水利用率 r 
-            projectionArea: 1f, //投影面积Sp
+            projectionArea: 3f, //投影面积Sp
             extinctionCoefficient: 1f, // 消光系数
             leafAllometryE: 1f, //叶子厚度 e 
             
@@ -78,7 +76,7 @@ public class tester: MonoBehaviour
             
             phytomerValidcycles: 2, // 叶元 - 汇 - 有效周期 ※※※※※※※※※
             phytomerSinkFunction: (phi, age) => { return 1.0f; }, // 叶元 - 汇 - 函数 ※※※※※※※※※
-            phytomerAllometryDatas: new[] { (1f, 0f), (1f, 0f) }, // 叶元 - 异速数据 
+            phytomerAllometryDatas: new[] { (3f, 0f), (6f, 0f) }, // 叶元 - 异速数据 
             
             phytomerTopologyFunc: phytomerTopologyFunc,
             axisTopologyFunc: axisTopologyFunc,
@@ -95,9 +93,10 @@ public class tester: MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Space))
         {
             _plant.Growth(1.0f);
+            _plantRenderer.Render(_plant);
         }
     }
 }

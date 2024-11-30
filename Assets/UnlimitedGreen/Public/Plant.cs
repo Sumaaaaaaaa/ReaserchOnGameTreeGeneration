@@ -18,6 +18,9 @@ namespace UnlimitedGreen
         
         private readonly Flower _flower;
         private readonly Fruit _fruit;
+        public bool HasFlower => _flower is not null;
+        public bool HasFruit => _fruit is not null;
+        
         private readonly LeafData _leafData;
         private readonly PhytomerData _phytomerData;
         private readonly DualScaleAutomaton _dualScaleAutomaton;
