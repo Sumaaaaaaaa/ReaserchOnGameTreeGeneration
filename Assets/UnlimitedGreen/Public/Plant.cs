@@ -31,10 +31,10 @@ namespace UnlimitedGreen
         private readonly FlowerCohort _flowerCohort;
         
         // 变量
-        private int _age = 0;
-        private float _biomassStorage = 0.0f;
-        private List<Axis> _axisWithBud = new List<Axis>();
-        private readonly List<Axis> _axisNoBud = new List<Axis>(); 
+        internal int _age = 0;
+        internal float _biomassStorage = 0.0f;
+        internal List<Axis> _axisWithBud = new List<Axis>();
+        internal readonly List<Axis> _axisNoBud = new List<Axis>(); 
         //private List<Axis> _updatedAxis; 
 
 
@@ -325,107 +325,6 @@ namespace UnlimitedGreen
             }
 
             _axisWithBud = newAxisWithBud;
-        }
-
-        public void GizmosDraw(float drawRadius, bool showData)
-        {
-            // 画种子
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawWireCube(Vector3.zero,Vector3.one*drawRadius);
-            if (showData) // 植物的数据
-            {
-                Handles.Label(Vector3.zero, $"Age={_age},\nBiomass={_biomassStorage}" +
-                                            $"\nAxis_withBud={_axisWithBud.Count}\nAxis_noBud={_axisNoBud.Count}\n");
-            }
-            
-            // 画各个的轴
-            void DrawAxis(Axis axis,bool isLiveAxis)
-            {
-                // 画种子
-                if (isLiveAxis) Gizmos.color = Color.green;
-                else Gizmos.color = Color.red;
-                Gizmos.DrawWireCube(axis.BudPosition, Vector3.one * drawRadius);
-                
-                var gizmosDrawer = new GizmosLineDrawer(axis.Position, drawRadius); // 实例化 
-                
-                // 画叶元
-                foreach (var phytomer in axis.EntityPhytomers) // 遍历叶元
-                {
-                    Gizmos.color = Color.cyan;
-                    Gizmos.DrawWireSphere(phytomer.Position,drawRadius/4);
-                    if (phytomer.StoragePointer is not null)
-                    {
-                        // 还在期间内
-                        Gizmos.color = Color.blue;
-                    }
-                    else
-                    {
-                        Gizmos.color = Color.red;
-                    }
-                    gizmosDrawer.Draw(phytomer.Position); // 画叶元
-                    if (showData)
-                    {
-                        Handles.Label(phytomer.Position,$"r={phytomer.Radius:F2}");
-                    }
-
-                    foreach (var entityFlower in phytomer.AxillaryFlowers)
-                    {
-                        var endPosition = GenericFunctions.PhyllotaxisToVerticalDirection(
-                            entityFlower.PhyllotaxisRotation, phytomer.Direction, phytomer.SubDirection)
-                            *drawRadius + phytomer.Position;
-                        Gizmos.color = entityFlower.StoragePointer is not null ? Color.red : Color.magenta;
-                        Gizmos.DrawLine(phytomer.Position,endPosition);
-                        if (showData) Handles.Label(endPosition, $"b={entityFlower.Biomass:F2}");
-                    }
-
-                    foreach (var entityFruit in phytomer.AxillaryFruits)
-                    {
-                        var endPosition = GenericFunctions.PhyllotaxisToVerticalDirection(
-                            entityFruit.PhyllotaxisRotation, phytomer.Direction, phytomer.SubDirection) 
-                            * drawRadius + phytomer.Position;
-                        Gizmos.color = entityFruit.StoragePointer is not null ? new Color(255, 127, 0) : Color.black;
-                        Gizmos.DrawLine(phytomer.Position,endPosition);
-                        if(showData)Handles.Label(endPosition,$"b={entityFruit.Biomass:F2}");
-                    }
-
-                    foreach (var leaf in phytomer.AxillaryLeaves)
-                    {
-                        var endPosition =
-                            GenericFunctions.PhyllotaxisToVerticalDirection(leaf.PhyllotaxisRotation,
-                                phytomer.Direction, phytomer.SubDirection) * drawRadius + phytomer.Position;
-                        Gizmos.color = leaf.StoragePointer is not null ? Color.green : Color.gray;
-                        Gizmos.DrawLine(phytomer.Position,endPosition);
-                        if (showData) Handles.Label(endPosition, $"b={leaf.Biomass:F2}");
-                    }
-                }
-            }
-
-            foreach (var axis in _axisWithBud)
-            {
-                DrawAxis(axis,true);
-            }
-
-            foreach (var axis in _axisNoBud)
-            {
-                DrawAxis(axis,false);
-            }
-        }
-
-        private class GizmosLineDrawer
-        {
-            private Vector3 _prePosition;
-            private Vector3 _postPosition;
-            public GizmosLineDrawer(Vector3 beginPosition,float radius)
-            {
-                _postPosition = beginPosition;
-            }
-
-            public void Draw(Vector3 position)
-            {
-                _prePosition = _postPosition;
-                _postPosition = position;
-                Gizmos.DrawLine(_prePosition,_postPosition);
-            }
         }
     }
 }

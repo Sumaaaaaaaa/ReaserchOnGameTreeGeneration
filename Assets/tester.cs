@@ -7,9 +7,11 @@ public class tester: MonoBehaviour
     public int RandomSeed;
     public float DrawRadio;
     public bool ShowData;
+
+    private PlantRenderer _plantRenderer;
     private void Start()
     {
-        UnlimitedGreen.UnlimitedGreen.Test();
+        _plantRenderer = GetComponent<PlantRenderer>();
     }
 
     private void Awake()
@@ -88,7 +90,7 @@ public class tester: MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        _plant?.GizmosDraw(DrawRadio,ShowData);
+        _plantRenderer?.GizmosDraw(_plant);
     }
 
     private void Update()
