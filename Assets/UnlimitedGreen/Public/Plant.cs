@@ -18,13 +18,14 @@ namespace UnlimitedGreen
         
         private readonly Flower _flower;
         private readonly Fruit _fruit;
-        public bool HasFlower => _flower is not null;
-        public bool HasFruit => _fruit is not null;
+        internal bool HasFlower => _flower is not null;
+        internal bool HasFruit => _fruit is not null;
         
         private readonly LeafData _leafData;
         private readonly PhytomerData _phytomerData;
         private readonly DualScaleAutomaton _dualScaleAutomaton;
         private readonly Bud[] _buds;
+        internal float LeafAllometryE => _leafData.LeafAllometryE;
         
         // 器官列
         private readonly NewPhytomerCohort _newPhytomerCohort;

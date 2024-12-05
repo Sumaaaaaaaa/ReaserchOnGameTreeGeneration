@@ -3,6 +3,7 @@ using UnityEngine;
 using UnlimitedGreen;
 public class tester: MonoBehaviour
 {
+    public bool GizmosDraw;
     private Plant _plant;
     public int RandomSeed;
 
@@ -41,8 +42,8 @@ public class tester: MonoBehaviour
         });
         var p3 = new Phytomer(0,new[]
         {
-            new Phyllotaxis(180,true,BeerOrgan.None),
-            new Phyllotaxis(180,true,BeerOrgan.Flower)
+            new Phyllotaxis(180,false,BeerOrgan.Fruit),
+            new Phyllotaxis(180,false,BeerOrgan.Flower)
         });
         
         // 自动机
@@ -63,7 +64,7 @@ public class tester: MonoBehaviour
         _plant = new Plant(
             randomSeed: RandomSeed,
             maxPhysiologicalAge: 2,
-            initialBiomass: 1,
+            initialBiomass: 0.3f,
             startDireciton: Vector3.up, 
             waterUseEfficiency: 1f, // 水利用率 r 
             projectionArea: 3f, //投影面积Sp
@@ -74,26 +75,27 @@ public class tester: MonoBehaviour
             leafSinkValidCycles: 5, // 叶 - 汇 - 有效周期 ※※※※※※※※※
             leafSinkFunction: (phi, age) => { return 1.0f; }, // 叶 - 汇 - 函数 ※※※※※※※※※
             
-            phytomerValidcycles: 2, // 叶元 - 汇 - 有效周期 ※※※※※※※※※
-            phytomerSinkFunction: (phi, age) => { return 1.0f; }, // 叶元 - 汇 - 函数 ※※※※※※※※※
-            phytomerAllometryDatas: new[] { (3f, 0f), (6f, 0f) }, // 叶元 - 异速数据 
+            phytomerValidcycles: 8, // 叶元 - 汇 - 有效周期 ※※※※※※※※※
+            phytomerSinkFunction: (phi, age) => 0.25f+0.75f*(age!=1?1:0), // 叶元 - 汇 - 函数 ※※※※※※※※※
+            phytomerAllometryDatas: new[] { (11f, 0f), (15f, 0f) }, // 叶元 - 异速数据 
             
             phytomerTopologyFunc: phytomerTopologyFunc,
             axisTopologyFunc: axisTopologyFunc,
             dualScaleAutomaton: automaton,
             buds: new Bud[]{bud,bud},
-            flower:new Flower(2,(_)=>1f)
+            flower:new Flower(2,(_)=>1f),
+            fruit:new Fruit(2,(_)=>0.5f)
         );
     }
 
     private void OnDrawGizmos()
     {
-        _plantRenderer?.GizmosDraw(_plant);
+        if(GizmosDraw) _plantRenderer?.GizmosDraw(_plant);
     }
 
     private void Update()
     {
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             _plant.Growth(1.0f);
             _plantRenderer.Render(_plant);
