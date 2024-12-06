@@ -251,9 +251,12 @@ namespace UnlimitedGreen
                 }
                 else
                 {
-                    axis.ApicalBud = null;
-                    _axisWithBud.Remove(axis);
-                    _axisWithoutBud.Add(axis);
+                    if (axis.ApicalBud is not null)
+                    {
+                        axis.ApicalBud = null;
+                        _axisWithBud.Remove(axis);
+                        _axisWithoutBud.Add(axis);
+                    }
                     
                     if (positionRatio == 0)
                     {
