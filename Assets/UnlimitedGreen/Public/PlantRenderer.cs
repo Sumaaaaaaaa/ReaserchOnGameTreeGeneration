@@ -325,7 +325,7 @@ namespace UnlimitedGreen
             }
 
             // 对轴进行处理
-            foreach (var axis in plant._axisNoBud)
+            foreach (var axis in plant._axisWithoutBud)
             {
                 AxisProcess(axis);
             }
@@ -390,7 +390,7 @@ namespace UnlimitedGreen
             if (showData) // 植物的数据
             {
                 Handles.Label(Vector3.zero, $"Age={plant._age},\nBiomass={plant._biomassStorage}" +
-                                            $"\nAxis_withBud={plant._axisWithBud.Count}\nAxis_noBud={plant._axisNoBud.Count}\n");
+                                            $"\nAxis_withBud={plant._axisWithBud.Count}\nAxis_noBud={plant._axisWithoutBud.Count}\n");
             }
             
             // 画各个的轴
@@ -460,7 +460,7 @@ namespace UnlimitedGreen
                 DrawAxis(axis,true);
             }
 
-            foreach (var axis in plant._axisNoBud)
+            foreach (var axis in plant._axisWithoutBud)
             {
                 DrawAxis(axis,false);
             }

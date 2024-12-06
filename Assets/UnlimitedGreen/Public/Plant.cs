@@ -12,6 +12,9 @@ namespace UnlimitedGreen
         // OPT: 将项目中的所有中文解释改为英语
         // TODO: 撰写完整的程序README
         
+        // 静态参数
+        public static float PruningThreshold = 0.1f;
+
         // 参数
         private readonly int _maxPhysiologicalAge;
         private readonly Random _random;
@@ -38,7 +41,8 @@ namespace UnlimitedGreen
         internal int _age = 0;
         internal float _biomassStorage = 0.0f;
         internal List<Axis> _axisWithBud = new List<Axis>();
-        internal readonly List<Axis> _axisNoBud = new List<Axis>(); 
+        internal readonly List<Axis> _axisWithoutBud = new List<Axis>(); 
+        
         //private List<Axis> _updatedAxis; 
 
 
@@ -182,6 +186,90 @@ namespace UnlimitedGreen
 
         }
 
+        internal void Pruning(Axis targetAxis,int targetIndex, float positionRatio)
+        {
+            // 对指定的Phytomer进行比例的剪短（位置移动）
+            if (positionRatio >= PruningThreshold)
+            {
+                var phytomer = targetAxis.EntityPhytomers[targetIndex];
+                var prePosition = targetIndex == 0
+                    ? targetAxis.Position
+                    : targetAxis.EntityPhytomers[targetIndex - 1].Position;
+                phytomer.Position =
+                    prePosition + (phytomer.Position - prePosition) * positionRatio;
+            }
+            else
+            {
+                positionRatio = 0;
+            }
+            
+            // 数据方面的处理
+            var axisQueue = new Queue<Axis>();
+            axisQueue.Enqueue(targetAxis);
+            while (axisQueue.Count != 0)
+            {
+                var axis = axisQueue.Dequeue();
+                for (var i = targetIndex; i < axis.EntityPhytomers.Count; i++)
+                {
+                    // 将各个器官对应的器官列中的该对象数据去除掉
+                    foreach (var flower in axis.EntityPhytomers[i].AxillaryFlowers)
+                    {
+                        flower.StoragePointer?.Remove(flower);
+                    }
+                    foreach (var fruit in axis.EntityPhytomers[i].AxillaryFruits)
+                    {
+                        fruit.StoragePointer?.Remove(fruit);
+                    }
+                    foreach (var leaf in axis.EntityPhytomers[i].AxillaryLeaves)
+                    {
+                        leaf.StoragePointer?.Remove(leaf);
+                    }
+                    axis.EntityPhytomers[i].AxillaryFlowers = new EntityFlower[]{};
+                    axis.EntityPhytomers[i].AxillaryFruits = new EntityFruit[]{};
+                    axis.EntityPhytomers[i].AxillaryLeaves = new EntityLeaf[]{};
+                    
+                    // 将携带的轴加入处理队列当中
+                    foreach (var axillaryAxi in axis.EntityPhytomers[i].AxillaryAxis)
+                    {
+                        axisQueue.Enqueue(axillaryAxi);
+                    }
+                    axis.EntityPhytomers[i].AxillaryAxis = new Axis[]{};
+                }
+
+                if (targetIndex == 0 & positionRatio == 0)
+                {
+                    if (axis.ApicalBud is not null)
+                    {
+                        // 有芽
+                        _axisWithBud.Remove(axis);
+                    }
+                    else
+                    {
+                        // 无芽
+                        _axisWithoutBud.Remove(axis);
+                    }
+                }
+                else
+                {
+                    axis.ApicalBud = null;
+                    _axisWithBud.Remove(axis);
+                    _axisWithoutBud.Add(axis);
+                    
+                    if (positionRatio == 0)
+                    {
+                        axis.EntityPhytomers = axis.EntityPhytomers.GetRange(0,targetIndex);
+                        targetIndex = 0;
+                    }
+                    else
+                    {
+                        axis.EntityPhytomers = axis.EntityPhytomers.GetRange(0,targetIndex+1);
+                        targetIndex = 0;
+                        positionRatio = 0;
+                    }
+                }
+            }
+        }
+        
         public void Growth(float environmentParameter)
         {
             _age++;
@@ -233,7 +321,7 @@ namespace UnlimitedGreen
                 else
                 {
                     // 芽死了
-                    _axisNoBud.Add(axis);
+                    _axisWithoutBud.Add(axis);
                     axis.ApicalBud = null;
                 }
 

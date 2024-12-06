@@ -124,6 +124,7 @@ namespace UnlimitedGreen
                 var array = i.ToArray();
                 foreach (var j in array)
                 {
+                    if (j.EntityLeaves.Count == 0) continue;
                     biomassSum += j.EntityLeaves.Count * j.EntityLeaves.First().Biomass;
                 }
             }
@@ -132,6 +133,7 @@ namespace UnlimitedGreen
                 var array = i.ToArray();
                 foreach (var j in array)
                 {
+                    if (j.EntityLeaves.Count == 0) continue;
                     biomassSum += j.EntityLeaves.Count * j.EntityLeaves.First().Biomass;
                 }
             }
