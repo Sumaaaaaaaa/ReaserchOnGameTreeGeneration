@@ -6,11 +6,14 @@ public class tester: MonoBehaviour
     public bool GizmosDraw;
     private Plant _plant;
     public int RandomSeed;
-
     private PlantRenderer _plantRenderer;
+    private PlantPruner _plantPruner;
+    
+    
     private void Start()
     {
         _plantRenderer = GetComponent<PlantRenderer>();
+        _plantPruner = GetComponent<PlantPruner>();
     }
 
     private void Awake()
@@ -99,6 +102,7 @@ public class tester: MonoBehaviour
         {
             _plant.Growth(1.0f);
             _plantRenderer.Render(_plant);
+            _plantPruner.Generate(_plant);
         }
     }
 }
