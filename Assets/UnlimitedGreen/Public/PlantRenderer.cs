@@ -103,7 +103,7 @@ namespace UnlimitedGreen
                 float organRadius;
                 if (entityOrgan is EntityFruit | entityOrgan is EntityFlower)
                 {
-                    organRadius = Mathf.Pow((entityOrgan.Biomass * 0.75f / Mathf.PI), 1f / 3f);
+                    organRadius = GenericFunctions.CalFlowerFruitRadius(entityOrgan.Biomass);
                 }
                 else if (entityOrgan is EntityLeaf)
                 {

@@ -272,6 +272,24 @@ namespace UnlimitedGreen
                 }
             }
         }
+
+        internal void Pruning(EntityPhytomer targetPhytomer, int targetFruitIndex)
+        {
+            // 剔除水果器官列中的目标水果对象
+            targetPhytomer.AxillaryFruits[targetFruitIndex].StoragePointer?.Remove
+                (targetPhytomer.AxillaryFruits[targetFruitIndex]);
+            
+            // 创建剔除了目标水果的新水果数组
+            var newAxillaryFruits = new EntityFruit[targetPhytomer.AxillaryFruits.Length - 1];
+            for (int i = 0, j = 0; i < targetPhytomer.AxillaryFruits.Length; i++)
+            {
+                if (i == targetFruitIndex)continue;
+                newAxillaryFruits[j++] = targetPhytomer.AxillaryFruits[i];
+            }
+            
+            // 将新的水果数组赋值
+            targetPhytomer.AxillaryFruits = newAxillaryFruits;
+        }
         
         public void Growth(float environmentParameter)
         {

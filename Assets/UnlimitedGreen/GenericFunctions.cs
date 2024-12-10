@@ -44,5 +44,10 @@ namespace UnlimitedGreen
             Quaternion rotation = Quaternion.AngleAxis(phyllotaxisDirection, direction);
             return rotation * subDirection;
         }
+
+        internal static float CalFlowerFruitRadius(float biomassStorage)
+        {
+            return Mathf.Pow((biomassStorage * 0.75f / Mathf.PI), 1f / 3f);
+        }
     }
 }

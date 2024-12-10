@@ -11,9 +11,13 @@ public class CameraRayTracing : MonoBehaviour
             RaycastHit raycastHit;
             if (Physics.Raycast(ray, out raycastHit))
             {
-                if (raycastHit.collider.TryGetComponent<PruningTarget>(out var p))
+                if (raycastHit.collider.TryGetComponent<PruningPhytomer>(out var p))
                 {
                     p.Pruning(raycastHit.point);
+                }
+                if (raycastHit.collider.TryGetComponent<PruningFruit>(out var pf))
+                {
+                    pf.Pruning();
                 }
             }
         }
