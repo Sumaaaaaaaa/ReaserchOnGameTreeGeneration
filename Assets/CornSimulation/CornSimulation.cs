@@ -63,12 +63,13 @@ namespace CornSimulation
             _plantRenderer = gameObject.GetComponent<PlantRenderer>();
 
             // 叶元设计
-            var pDec = new Phytomer(0.1f,
+            var randomValue = 0.3f;
+            var pDec = new Phytomer(randomValue,
                 new[] { new Phyllotaxis(180, true, BeerOrgan.None, 0), new Phyllotaxis(180, true, BeerOrgan.None, 0) });
-            var pAlt = new Phytomer(0.1f, new[] { new Phyllotaxis(180, true, BeerOrgan.None, 0) });
-            var pDecCob = new Phytomer(0.1f,
+            var pAlt = new Phytomer(randomValue, new[] { new Phyllotaxis(180, true, BeerOrgan.None, 0) });
+            var pDecCob = new Phytomer(randomValue,
                 new[] { new Phyllotaxis(180, true, BeerOrgan.None, 0), new Phyllotaxis(180, true, BeerOrgan.Fruit) });
-            var pAltCob = new Phytomer(0.1f, new[] { new Phyllotaxis(180, true, BeerOrgan.Fruit, 0) });
+            var pAltCob = new Phytomer(randomValue, new[] { new Phyllotaxis(180, true, BeerOrgan.Fruit, 0) });
             var pT = new Phytomer(0, new[] { new Phyllotaxis(180, false, BeerOrgan.Flower) });
 
             // 自动机
@@ -85,7 +86,7 @@ namespace CornSimulation
             // 芽
             var bud = new Bud(
                 new[] { true },
-                (_) => 1,
+                (_) => 0.8f,
                 (_) => 1,
                 (_, _) => 1,
                 (_) => 1
@@ -94,7 +95,7 @@ namespace CornSimulation
         _plant = new Plant(
                 randomSeed: randomSeed,
                 maxPhysiologicalAge: 4,
-                initialBiomass: 1.1f,
+                initialBiomass: 0.1f, 
 
                 // 启动时拓扑信息
                 startDireciton: Vector3.up,
@@ -102,7 +103,7 @@ namespace CornSimulation
                 // 源计算相关参数 
                 waterUseEfficiency: 0.056f, /* g MJ-1 单位可能不正确*/
                 projectionArea: 0.1200f, /* cm2 单位可能不正确*/
-                extinctionCoefficient: 0.1f, /*论文中没有记述*/
+                extinctionCoefficient: 1f, /*论文中没有记述*/
 
                 // 叶子
                 leafAllometryE: 0.024f, /*单位可能不正确*/
@@ -111,9 +112,9 @@ namespace CornSimulation
                 leafSinkFunction: BetaLaw(2.7f, 3.8f, 12f, 1f), // 注意检查可能出现的BetaLaw的错误
 
                 // 叶元数据
-                phytomerValidcycles: 20,
+                phytomerValidcycles: 1,
                 phytomerSinkFunction: BetaLaw(4.1f, 4.1f, 20, 1.5f),
-                phytomerAllometryDatas: new []{(8.4f,0f),(8.4f,0f),(8.4f,0f),(8.4f,0f)}, //TODO: 必须要进行经验性调整
+                phytomerAllometryDatas: new []{(10f,0f),(10f,0f),(10f,0f),(10f,0f)}, //TODO: 必须要进行经验性调整
                 phytomerTopologyFunc: (_, prePosition, preDirection, length) =>
                 {
                     var newPosition = prePosition + preDirection * length;
@@ -139,9 +140,9 @@ namespace CornSimulation
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.Space) & _plant.Age<41)
             {
-                _plant.Growth(1.0f);
+                _plant.Growth(1.1f);
                 _plantRenderer.Render(_plant);
             }
         }

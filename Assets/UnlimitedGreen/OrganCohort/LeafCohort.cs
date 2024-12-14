@@ -142,8 +142,6 @@ namespace UnlimitedGreen
             var productBiomass = environmentParameter * _leafData.ProjectionArea
                                  / _leafData.WaterUseEfficiency
                                  * (1 - Mathf.Exp(-_leafData.ExtinctionCoefficient * totalArea / _leafData.ProjectionArea));
-            Debug.Log( System.MathF.Exp((-_leafData.ExtinctionCoefficient * totalArea / _leafData.ProjectionArea)));
-            Debug.Log( -_leafData.ExtinctionCoefficient * totalArea / _leafData.ProjectionArea);
             
             return productBiomass;
         }

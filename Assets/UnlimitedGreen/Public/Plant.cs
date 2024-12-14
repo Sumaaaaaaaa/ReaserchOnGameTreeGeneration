@@ -305,6 +305,9 @@ namespace UnlimitedGreen
             sumSink += _newPhytomerCohort.CalculateSinkSum(_age);
             sumSink += _phytomerCohort.CalculateSinkSum(_age);
             
+            // 用于防止当biomass存量为0时，会出现的正在生长的器官出现生物质变为NaN的问题
+            //TODO: 治标不治本的方法，需要找到问题的源头 [可能是因为果没有在规定的周期ValidCycles时停止下一次汇计算]
+            if (_biomassStorage == 0) return;
             // 主要生长
             _newPhytomerCohort.Allocate(_biomassStorage,sumSink);
             
