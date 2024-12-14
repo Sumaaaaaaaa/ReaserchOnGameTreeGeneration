@@ -39,6 +39,7 @@ namespace UnlimitedGreen
         
         // 变量
         internal int _age = 0;
+        public int Age => _age;
         internal float _biomassStorage = 0.0f;
         internal List<Axis> _axisWithBud = new List<Axis>();
         internal readonly List<Axis> _axisWithoutBud = new List<Axis>(); 
