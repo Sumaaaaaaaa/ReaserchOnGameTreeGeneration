@@ -123,52 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &203008453
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 203008455}
-  - component: {fileID: 203008454}
-  m_Layer: 0
-  m_Name: CameraCenter
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &203008454
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 203008453}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b0e51628adc28d40921df322336b458, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 10
---- !u!4 &203008455
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 203008453}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.55, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1763195358}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &459090208
 GameObject:
   m_ObjectHideFlags: 0
@@ -206,14 +160,14 @@ MonoBehaviour:
   axisRes: 6
   leafMesh: {fileID: 2993053094344952580, guid: 5b437330c67b0054293890128592b78a, type: 3}
   leafMaterial: {fileID: 2100000, guid: 26fdf8b2effc8914783b4eee34455a68, type: 2}
-  leafSizeMul: 0.28
+  leafSizeMul: 0.45
   leafDirection: 0
   flowerMaterial: {fileID: 2100000, guid: 3a4ed259ba248304c9ab0adeff62e244, type: 2}
   flowerMesh: {fileID: 2802575606163712233, guid: 73c59b17a73e8a54d9a07c6fbf4b7de4, type: 3}
-  flowerSizeMultiply: 1.75
+  flowerSizeMultiply: 2.5
   fruitMaterial: {fileID: 2100000, guid: 0b852230ce2c389499b0d647cef80dc8, type: 2}
   fruitMesh: {fileID: 4004621660992953091, guid: 8070940f712c18f4cb1063b15cc0cb6f, type: 3}
-  fruitSizeMultiply: 0.6
+  fruitSizeMultiply: 1.5
   drawRadius: 0.24
   showData: 1
 --- !u!23 &459090210
@@ -279,6 +233,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   randomSeed: -123
+  growthTimes: 30
+  topologyFuncMul: 2
 --- !u!4 &459090213
 Transform:
   m_ObjectHideFlags: 0
@@ -331,14 +287,14 @@ MonoBehaviour:
   axisRes: 6
   leafMesh: {fileID: 2993053094344952580, guid: 5b437330c67b0054293890128592b78a, type: 3}
   leafMaterial: {fileID: 2100000, guid: 26fdf8b2effc8914783b4eee34455a68, type: 2}
-  leafSizeMul: 0.28
+  leafSizeMul: 0.45
   leafDirection: 0
   flowerMaterial: {fileID: 2100000, guid: 3a4ed259ba248304c9ab0adeff62e244, type: 2}
   flowerMesh: {fileID: 2802575606163712233, guid: 73c59b17a73e8a54d9a07c6fbf4b7de4, type: 3}
-  flowerSizeMultiply: 1.75
+  flowerSizeMultiply: 2.5
   fruitMaterial: {fileID: 2100000, guid: 0b852230ce2c389499b0d647cef80dc8, type: 2}
   fruitMesh: {fileID: 4004621660992953091, guid: 8070940f712c18f4cb1063b15cc0cb6f, type: 3}
-  fruitSizeMultiply: 0.6
+  fruitSizeMultiply: 1.5
   drawRadius: 0.24
   showData: 1
 --- !u!23 &1481598942
@@ -404,6 +360,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   randomSeed: 34
+  growthTimes: 30
+  topologyFuncMul: 2
 --- !u!4 &1481598945
 Transform:
   m_ObjectHideFlags: 0
@@ -456,14 +414,14 @@ MonoBehaviour:
   axisRes: 6
   leafMesh: {fileID: 2993053094344952580, guid: 5b437330c67b0054293890128592b78a, type: 3}
   leafMaterial: {fileID: 2100000, guid: 26fdf8b2effc8914783b4eee34455a68, type: 2}
-  leafSizeMul: 0.28
+  leafSizeMul: 0.45
   leafDirection: 0
   flowerMaterial: {fileID: 2100000, guid: 3a4ed259ba248304c9ab0adeff62e244, type: 2}
   flowerMesh: {fileID: 2802575606163712233, guid: 73c59b17a73e8a54d9a07c6fbf4b7de4, type: 3}
-  flowerSizeMultiply: 1.75
+  flowerSizeMultiply: 2.5
   fruitMaterial: {fileID: 2100000, guid: 0b852230ce2c389499b0d647cef80dc8, type: 2}
   fruitMesh: {fileID: 4004621660992953091, guid: 8070940f712c18f4cb1063b15cc0cb6f, type: 3}
-  fruitSizeMultiply: 0.6
+  fruitSizeMultiply: 1.5
   drawRadius: 0.24
   showData: 1
 --- !u!23 &1486480881
@@ -529,6 +487,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   randomSeed: 547
+  growthTimes: 30
+  topologyFuncMul: 2
 --- !u!4 &1486480884
 Transform:
   m_ObjectHideFlags: 0
@@ -581,14 +541,14 @@ MonoBehaviour:
   axisRes: 6
   leafMesh: {fileID: 2993053094344952580, guid: 5b437330c67b0054293890128592b78a, type: 3}
   leafMaterial: {fileID: 2100000, guid: 26fdf8b2effc8914783b4eee34455a68, type: 2}
-  leafSizeMul: 0.28
+  leafSizeMul: 0.45
   leafDirection: 0
   flowerMaterial: {fileID: 2100000, guid: 3a4ed259ba248304c9ab0adeff62e244, type: 2}
   flowerMesh: {fileID: 2802575606163712233, guid: 73c59b17a73e8a54d9a07c6fbf4b7de4, type: 3}
-  flowerSizeMultiply: 1.75
+  flowerSizeMultiply: 2.5
   fruitMaterial: {fileID: 2100000, guid: 0b852230ce2c389499b0d647cef80dc8, type: 2}
   fruitMesh: {fileID: 4004621660992953091, guid: 8070940f712c18f4cb1063b15cc0cb6f, type: 3}
-  fruitSizeMultiply: 0.6
+  fruitSizeMultiply: 1.5
   drawRadius: 0.24
   showData: 1
 --- !u!23 &1636550952
@@ -654,6 +614,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   randomSeed: 691
+  growthTimes: 30
+  topologyFuncMul: 2
 --- !u!4 &1636550955
 Transform:
   m_ObjectHideFlags: 0
@@ -706,14 +668,14 @@ MonoBehaviour:
   axisRes: 6
   leafMesh: {fileID: 2993053094344952580, guid: 5b437330c67b0054293890128592b78a, type: 3}
   leafMaterial: {fileID: 2100000, guid: 26fdf8b2effc8914783b4eee34455a68, type: 2}
-  leafSizeMul: 0.28
+  leafSizeMul: 0.45
   leafDirection: 0
   flowerMaterial: {fileID: 2100000, guid: 3a4ed259ba248304c9ab0adeff62e244, type: 2}
   flowerMesh: {fileID: 2802575606163712233, guid: 73c59b17a73e8a54d9a07c6fbf4b7de4, type: 3}
-  flowerSizeMultiply: 1.75
+  flowerSizeMultiply: 2.5
   fruitMaterial: {fileID: 2100000, guid: 0b852230ce2c389499b0d647cef80dc8, type: 2}
   fruitMesh: {fileID: 4004621660992953091, guid: 8070940f712c18f4cb1063b15cc0cb6f, type: 3}
-  fruitSizeMultiply: 0.6
+  fruitSizeMultiply: 1.5
   drawRadius: 0.24
   showData: 1
 --- !u!23 &1735819144
@@ -779,6 +741,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   randomSeed: 1148
+  growthTimes: 30
+  topologyFuncMul: 2
 --- !u!4 &1735819147
 Transform:
   m_ObjectHideFlags: 0
@@ -821,13 +785,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1763195357}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.23692207, y: -0, z: -0, w: 0.97152865}
-  m_LocalPosition: {x: 0, y: 2.14, z: -3.89}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 4.34, z: -17.05}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 203008455}
-  m_LocalEulerAnglesHint: {x: 27.41, y: 0, z: 0}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1763195359
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -857,8 +821,8 @@ Camera:
   m_GameObject: {fileID: 1763195357}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 1, g: 1, b: 1, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -997,7 +961,7 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 203008455}
+  - {fileID: 1763195358}
   - {fileID: 1995560174}
   - {fileID: 459090213}
   - {fileID: 1486480884}

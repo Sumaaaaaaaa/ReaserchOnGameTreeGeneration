@@ -51,7 +51,11 @@ namespace CornSimulation
                 return m * 1 / N * Mathf.Pow(age / T, a - 1) * Mathf.Pow(1 - age / T, b - 1);
             };
         }
+
         public int randomSeed = 0;
+        public int growthTimes = 1;
+        public float topologyFuncMul = 1.0f;
+        
         private Plant _plant;
 
         private AutomatonFunc _af;
@@ -117,8 +121,8 @@ namespace CornSimulation
                 phytomerAllometryDatas: new []{(10f,0f),(10f,0f),(10f,0f),(10f,0f)}, //TODO: 必须要进行经验性调整
                 phytomerTopologyFunc: (_, prePosition, preDirection, length) =>
                 {
-                    var newPosition = prePosition + preDirection * length;
-                    var newDirection = Vector3.up + new Vector3((_af.Random()-0.5f)*0.25f,0,(_af.Random()-0.5f)*0.25f);
+                    var newPosition = prePosition + preDirection * (length * topologyFuncMul);
+                    var newDirection = Vector3.up + new Vector3((_af.Random()-0.5f)*0.15f,0,(_af.Random()-0.5f)*0.15f);
                     newDirection = newDirection.normalized;
                     return (newPosition, newDirection);
                 },
@@ -131,20 +135,27 @@ namespace CornSimulation
                 flower: new Flower(2, (_) => 20),
                 fruit: new Fruit(30, BetaLaw2(7.3f, 3.8f, 30f, 223.85f))
             );
+        
+            for (var _ = 0; _ < growthTimes;_++)
+            {
+                _plant.Growth(1.0f);
+            }
+            _plantRenderer.Render(_plant);
+            
         }
 
         private void OnDrawGizmos()
         {
-            if (_plant is not null) _plantRenderer.GizmosDraw(_plant);
+            // if (_plant is not null) _plantRenderer.GizmosDraw(_plant);
         }
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Space) & _plant.Age<41)
-            {
-                _plant.Growth(1.1f);
-                _plantRenderer.Render(_plant);
-            }
+            // if (Input.GetKeyDown(KeyCode.Space) & _plant.Age<41)
+            // {
+            //     _plant.Growth(1.1f);
+            //     _plantRenderer.Render(_plant);
+            // }
         }
     }
 }
