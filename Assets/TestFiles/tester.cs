@@ -63,6 +63,13 @@ public class tester: MonoBehaviour
             branchingIntensity: (_, _) => 1f,
             lightRatio: (_) => 1f
         );
+        var bud2 = new Bud(
+            rhythmRatio: new[] {false,true,true},
+            randomRatio: (_) => 1,
+            viabilityRatio: (_) => 1f,
+            branchingIntensity: (_, _) => 1f,
+            lightRatio: (_) => 1f
+        );
         
         _plant = new Plant(
             randomSeed: RandomSeed,
@@ -79,13 +86,13 @@ public class tester: MonoBehaviour
             leafSinkFunction: (phi, age) => { return 1.0f; }, // 叶 - 汇 - 函数 ※※※※※※※※※
             
             phytomerValidcycles: 8, // 叶元 - 汇 - 有效周期 ※※※※※※※※※
-            phytomerSinkFunction: (phi, age) => 0.25f+0.75f*(age!=1?1:0), // 叶元 - 汇 - 函数 ※※※※※※※※※
+            phytomerSinkFunction: (phi, age) => phi==1 ? (0.25f + 0.75f * (age != 1 ? 1 : 0)) : (0.1f + 0.1f * (age != 1 ? 1 : 0)), // 叶元 - 汇 - 函数 ※※※※※※※※※
             phytomerAllometryDatas: new[] { (11f, 0f), (15f, 0f) }, // 叶元 - 异速数据 
             
             phytomerTopologyFunc: phytomerTopologyFunc,
             axisTopologyFunc: axisTopologyFunc,
             dualScaleAutomaton: automaton,
-            buds: new Bud[]{bud,bud},
+            buds: new Bud[]{bud,bud2},
             flower:new Flower(2,(_)=>1f),
             fruit:new Fruit(2,(_)=>0.5f)
         );

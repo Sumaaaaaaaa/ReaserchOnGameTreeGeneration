@@ -262,7 +262,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GizmosDraw: 1
-  RandomSeed: 1103
+  RandomSeed: 1863
 --- !u!4 &1478233572
 Transform:
   m_ObjectHideFlags: 0
