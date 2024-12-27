@@ -5,6 +5,10 @@ public class CameraRayTracing : MonoBehaviour
 {
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            ScreenCapture.CaptureScreenshot("C:\\Users\\USER\\Desktop\\sc\\0.png");
+        }
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
