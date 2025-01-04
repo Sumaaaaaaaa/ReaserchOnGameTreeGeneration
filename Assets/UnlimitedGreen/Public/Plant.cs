@@ -319,7 +319,14 @@ namespace UnlimitedGreen
             
             // 生产
             var producedBiomass = _leafCohort.Production(environmentParameter);
-            _biomassStorage = producedBiomass;
+            if (sumSink == 0)
+            {
+                _biomassStorage += producedBiomass;
+            }
+            else
+            {
+                _biomassStorage = producedBiomass;
+            }
             
             // 年龄增长操作
             if (_fruit is not null) _fruitCohort.IncreaseAge(_age);

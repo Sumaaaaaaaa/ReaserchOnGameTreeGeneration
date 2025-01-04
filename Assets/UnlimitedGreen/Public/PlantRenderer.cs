@@ -380,18 +380,20 @@ namespace UnlimitedGreen
         // GizmosDraw()
         public void GizmosDraw(Plant plant)
         {
-            
+            var GoPosition = transform.position;
             // 设置Gizmos的矩阵
             Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, transform.localScale);
             
             // 画种子
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireCube(Vector3.zero,Vector3.one*drawRadius);
+#if UNITY_EDITOR
             if (showData) // 植物的数据
             {
-                Handles.Label(Vector3.zero, $"Age={plant._age},\nBiomass={plant._biomassStorage}" +
-                                            $"\nAxis_withBud={plant._axisWithBud.Count}\nAxis_noBud={plant._axisWithoutBud.Count}\n");
+                Handles.Label(Vector3.zero+GoPosition, $"Age={plant._age},\nBiomass={plant._biomassStorage}" +
+                                                       $"\nAxis_withBud={plant._axisWithBud.Count}\nAxis_noBud={plant._axisWithoutBud.Count}\n");
             }
+#endif
             
             // 画各个的轴
             void DrawAxis(Axis axis,bool isLiveAxis)
@@ -418,10 +420,12 @@ namespace UnlimitedGreen
                         Gizmos.color = Color.red;
                     }
                     gizmosDrawer.Draw(phytomer.Position); // 画叶元
+#if UNITY_EDITOR
                     if (showData)
                     {
-                        Handles.Label(phytomer.Position,$"r={phytomer.Radius:F2}");
+                        Handles.Label(phytomer.Position+GoPosition,$"r={phytomer.Radius:F2}");
                     }
+#endif
 
                     foreach (var entityFlower in phytomer.AxillaryFlowers)
                     {
@@ -430,7 +434,9 @@ namespace UnlimitedGreen
                             *drawRadius + phytomer.Position;
                         Gizmos.color = entityFlower.StoragePointer is not null ? Color.red : Color.magenta;
                         Gizmos.DrawLine(phytomer.Position,endPosition);
-                        if (showData) Handles.Label(endPosition, $"b={entityFlower.Biomass:F2}");
+#if UNITY_EDITOR
+                        if (showData) Handles.Label(endPosition+GoPosition, $"b={entityFlower.Biomass:F2}");
+#endif
                     }
 
                     foreach (var entityFruit in phytomer.AxillaryFruits)
@@ -440,7 +446,9 @@ namespace UnlimitedGreen
                             * drawRadius + phytomer.Position;
                         Gizmos.color = entityFruit.StoragePointer is not null ? new Color(255, 127, 0) : Color.black;
                         Gizmos.DrawLine(phytomer.Position,endPosition);
-                        if(showData)Handles.Label(endPosition,$"b={entityFruit.Biomass:F2}");
+                        #if UNITY_EDITOR
+                        if(showData)Handles.Label(endPosition+GoPosition,$"b={entityFruit.Biomass:F2}");
+                        #endif
                     }
 
                     foreach (var leaf in phytomer.AxillaryLeaves)
@@ -450,7 +458,9 @@ namespace UnlimitedGreen
                                 phytomer.Direction, phytomer.SubDirection) * drawRadius + phytomer.Position;
                         Gizmos.color = leaf.StoragePointer is not null ? Color.green : Color.gray;
                         Gizmos.DrawLine(phytomer.Position,endPosition);
-                        if (showData) Handles.Label(endPosition, $"b={leaf.Biomass:F2}");
+                        #if UNITY_EDITOR
+                        if (showData) Handles.Label(endPosition+GoPosition, $"b={leaf.Biomass:F2}");
+                        #endif
                     }
                 }
             }

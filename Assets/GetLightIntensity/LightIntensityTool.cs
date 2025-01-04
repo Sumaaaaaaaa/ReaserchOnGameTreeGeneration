@@ -12,6 +12,8 @@ public class LightIntensityTool : MonoBehaviour
 
         var style = new GUIStyle();
         style.normal.textColor = Color.red;
+#if UNITY_EDITOR
         UnityEditor.Handles.Label(transform.position+Vector3.up*0.2f, lightValue.ToString(),style);
+#endif
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnlimitedGreen;
 using Random = UnityEngine.Random;
@@ -61,7 +62,7 @@ namespace CornSimulation
         private AutomatonFunc _af;
 
         private PlantRenderer _plantRenderer;
-        private void Awake()
+        private void Start()
         {
             _af = new AutomatonFunc(randomSeed + 1,_plant);
             _plantRenderer = gameObject.GetComponent<PlantRenderer>();
@@ -143,10 +144,11 @@ namespace CornSimulation
             _plantRenderer.Render(_plant);
             
         }
+        
 
         private void OnDrawGizmos()
         {
-            // if (_plant is not null) _plantRenderer.GizmosDraw(_plant);
+            if (_plant is not null) _plantRenderer.GizmosDraw(_plant);
         }
 
         private void Update()
@@ -157,5 +159,11 @@ namespace CornSimulation
             //     _plantRenderer.Render(_plant);
             // }
         }
+        public void Growth(float e)
+        {
+            _plant.Growth(e);
+            _plantRenderer.Render(_plant);
+        }
+        
     }
 }

@@ -105,11 +105,18 @@ public class tester: MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            _plant.Growth(1.0f);
-            _plantRenderer.Render(_plant);
-            _plantPruner.Generate(_plant);
-        }
+        // if (Input.GetKeyDown(KeyCode.Space))
+        // {
+        //     _plant.Growth(1.0f);
+        //     _plantRenderer.Render(_plant);
+        //     _plantPruner.Generate(_plant);
+        // }
+    }
+
+    public void Growth()
+    {
+        _plant.Growth(1.0f);
+        _plantRenderer.Render(_plant);
+        _plantPruner.Generate(_plant);
     }
 }
