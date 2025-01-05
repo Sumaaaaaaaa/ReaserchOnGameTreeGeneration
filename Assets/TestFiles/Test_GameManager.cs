@@ -10,6 +10,8 @@ public class Test_GameManager : MonoBehaviour
 
     public tester tester;
 
+    public LightCoverGo LightCoverGo;
+
     private void OnGUI()
     {
         var guiStyle = new GUIStyle();
@@ -33,6 +35,25 @@ public class Test_GameManager : MonoBehaviour
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
+
+        GUI.Label(new Rect(25, 330, 100, 300), "遮光",guiStyle);
+        if (GUI.Button(new Rect(25, 400, 200, 100), "左", buttonStyle))
+        {
+            LightCoverGo?.GoLeft();
+        }
+        if (GUI.Button(new Rect(25, 500, 200, 100), "中心", buttonStyle))
+        {
+            LightCoverGo?.GoCenter();
+        }
+        if (GUI.Button(new Rect(25, 600, 200, 100), "右", buttonStyle))
+        {
+            LightCoverGo?.GoRight();
+        }
+        if (GUI.Button(new Rect(25, 700, 200, 100), "なし", buttonStyle))
+        {
+            LightCoverGo?.Leave();
+        }
+
         
         GUI.Label(new Rect(25,25,100,30),$"Age : {_age}",guiStyle);
     }

@@ -8,6 +8,10 @@ public class LightIntensity
 {
     static public float GetLightIntensity(Vector3 worldPosition)
     {
+        // 设置Layer
+        int mask = ~0; 
+        mask &= ~(1 << 3); 
+        
         var intensity = 0.0f;
         Light[] lights = GameObject.FindObjectsOfType<Light>();
         foreach (var light in lights)
@@ -15,14 +19,13 @@ public class LightIntensity
             switch (light.type)
             {
                 case LightType.Directional:
-                    
                     // 若射线检测到碰撞，跳过
-                    if (Physics.Raycast(origin: worldPosition, direction: -light.transform.forward))
+                    if (Physics.Raycast(origin: worldPosition, direction: -light.transform.forward,maxDistance:float.MaxValue,layerMask:mask))
                     {
-                        Debug.DrawRay(worldPosition,-light.transform.forward,Color.red);
+                        Debug.DrawRay(worldPosition,-light.transform.forward,Color.red,1.0f);
                         continue; 
                     }
-                    Debug.DrawRay(worldPosition,-light.transform.forward,Color.green);
+                    Debug.DrawRay(worldPosition,-light.transform.forward,Color.green,1.0f);
                     intensity += CalculateLightIntensity(light, 1); // 计算光量
                     break;
                 
@@ -35,12 +38,12 @@ public class LightIntensity
                     }
                     // 若射线检测到碰撞，跳过
                     if (Physics.Raycast(origin: worldPosition, 
-                            direction: (light.transform.position - worldPosition).normalized))
+                            direction: (light.transform.position - worldPosition).normalized,maxDistance:float.MaxValue,layerMask:mask))
                     {
-                        Debug.DrawLine(worldPosition,light.transform.position,Color.red);
+                        Debug.DrawLine(worldPosition,light.transform.position,Color.red,1.0f);
                         continue; 
                     }
-                    Debug.DrawLine(worldPosition,light.transform.position,Color.green);
+                    Debug.DrawLine(worldPosition,light.transform.position,Color.green,1.0f);
                     intensity += CalculateLightIntensity(light, CalculateLightAttenuation(worldPosition,light)); // 计算光量
                     
                     break;
@@ -54,9 +57,10 @@ public class LightIntensity
                     }
                     // 若射线检测到碰撞，跳过
                     if (Physics.Raycast(origin: worldPosition, 
-                            direction: (light.transform.position - worldPosition).normalized))
+                            direction: (light.transform.position - worldPosition).normalized,
+                            maxDistance:float.MaxValue,layerMask:mask))
                     {
-                        Debug.DrawLine(worldPosition,light.transform.position,Color.red);
+                        Debug.DrawLine(worldPosition,light.transform.position,Color.red,1.0f);
                         continue; 
                     }
                     
@@ -67,11 +71,11 @@ public class LightIntensity
                     var compareValue = Mathf.Cos(light.spotAngle * Mathf.Deg2Rad * 0.5f);
                     if (dotValue <= compareValue)
                     {
-                        Debug.DrawLine(worldPosition,light.transform.position,Color.yellow);
+                        Debug.DrawLine(worldPosition,light.transform.position,Color.yellow,1.0f);
                         continue;
                     }
                     
-                    Debug.DrawLine(worldPosition,light.transform.position,Color.green);
+                    Debug.DrawLine(worldPosition,light.transform.position,Color.green,1.0f);
                     intensity += CalculateLightIntensity(light, CalculateLightAttenuation(worldPosition,light)); // 计算光量
                     
                     

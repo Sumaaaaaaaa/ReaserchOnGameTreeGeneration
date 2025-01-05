@@ -61,14 +61,24 @@ public class tester: MonoBehaviour
             randomRatio: (_) => 1,
             viabilityRatio: (_) => 1f,
             branchingIntensity: (_, _) => 1f,
-            lightRatio: (_) => 1f
+            lightRatio: (v) =>
+            {
+                var result = LightIntensity.GetLightIntensity(v);
+                var a = 0;
+                var b = 0.7757914f;
+                var c = 0.1f;
+                var d = 1f;
+                result = c + (d - c) * ((result - a) / (b - a));
+                print(result);
+                return result;
+            }
         );
         var bud2 = new Bud(
             rhythmRatio: new[] {false,true,true},
             randomRatio: (_) => 1,
             viabilityRatio: (_) => 1f,
             branchingIntensity: (_, _) => 1f,
-            lightRatio: (_) => 1f
+            lightRatio: LightIntensity.GetLightIntensity
         );
         
         _plant = new Plant(

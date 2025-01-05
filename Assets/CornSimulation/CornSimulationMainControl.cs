@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
@@ -11,6 +12,8 @@ public class CornSimulationMainControl : MonoBehaviour
 
     private int _age;
 
+    private float _e = 1.0f;
+    
     private string _seedRecord = "RandomSeed = ";
     
     private void Awake()
@@ -47,7 +50,7 @@ public class CornSimulationMainControl : MonoBehaviour
 
             foreach (var i in CornSimulations)
             {
-                i.Growth(1.1f);
+                i.Growth(_e);
                 //TODO: 该数值暂时没有办法被控制，需要加入一个控制数值量的输入口。
             }
         }
@@ -59,6 +62,8 @@ public class CornSimulationMainControl : MonoBehaviour
         
         GUI.Label(new Rect(25,25,100,30),$"Age : {_age}",guiStyle);
         GUI.Label(new Rect(50,1000,100,30),_seedRecord,guiStyle2);
+        _e = GUI.HorizontalSlider(new Rect(300, 100, 380, 400), _e, 0.0f, 2.0f);
+        GUI.Label(new Rect(300,25,100,30),$"環境変数 E={_e:F2}",guiStyle);
     }
     
 }

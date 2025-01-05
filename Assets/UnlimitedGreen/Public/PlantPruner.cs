@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace UnlimitedGreen
 {
@@ -43,8 +44,9 @@ namespace UnlimitedGreen
     }
     public class PlantPruner : MonoBehaviour
     {
-        [Range(0.01f,10f)]public float FruitSizeMul = 1.0f;
-        [Range(0.01f,10f)]public float PhytomerRadiusMul = 1.0f;
+        [Range(0.01f,10f)]public float fruitSizeMul = 1.0f;
+        [Range(0.01f,10f)]public float phytomerRadiusMul = 1.0f;
+        public int layerIndex;
         
         private readonly List<GameObject> _colliders = new List<GameObject>();
 
@@ -69,7 +71,7 @@ namespace UnlimitedGreen
                     var pos = (prePosition + phy.Position) / 2f;
                     
                     // 计算出这个collider 的尺寸
-                    var xz = phy.Radius * 2 * PhytomerRadiusMul;
+                    var xz = phy.Radius * 2 * phytomerRadiusMul;
                     var y = (phy.Position - prePosition).magnitude;
                     
                     // 计算出 collider 的旋转
@@ -83,6 +85,7 @@ namespace UnlimitedGreen
                     go.transform.localRotation = rot;
                     go.transform.localPosition = pos;
                     go.transform.localScale = new Vector3(xz, y, xz);
+                    go.layer = layerIndex;
                     
                     // 为其创建BoxCollider并进行设置
                     go.AddComponent<BoxCollider>();
@@ -109,7 +112,7 @@ namespace UnlimitedGreen
                     {
                         var fruit = phy.AxillaryFruits[j];
                         // 计算半径
-                        var radius = GenericFunctions.CalFlowerFruitRadius(fruit.Biomass) * FruitSizeMul;
+                        var radius = GenericFunctions.CalFlowerFruitRadius(fruit.Biomass) * fruitSizeMul;
                         // 计算位置
                         var direction = GenericFunctions.PhyllotaxisToVerticalDirection(fruit.PhyllotaxisRotation,
                             phy.Direction, phy.SubDirection);
@@ -122,6 +125,7 @@ namespace UnlimitedGreen
                         // Transform 设定
                         fruitGo.transform.parent = transform;
                         fruitGo.transform.localPosition = position;
+                        fruitGo.layer = layerIndex;
                         
                         // 创建SphereCollider并进行设置
                         fruitGo.AddComponent<SphereCollider>().radius = radius;

@@ -344,7 +344,7 @@ namespace UnlimitedGreen
             // 遍历所有的有芽轴
             foreach (var axis in _axisWithBud)
             {
-                if (axis.ApicalBud.Expansion(axis.Position, _age, out var result))
+                if (axis.ApicalBud.Expansion(axis.BudPosition, _age, out var result))
                     // 注意这里IndexNow指的是 程序序号，而不是 生物学上的生理年龄描述。
                 {
                     // 芽活着
