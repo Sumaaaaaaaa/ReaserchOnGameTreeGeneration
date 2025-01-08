@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
 public class CornSimulationMainControl : MonoBehaviour
@@ -48,11 +49,15 @@ public class CornSimulationMainControl : MonoBehaviour
                 return;
             }
 
-            foreach (var i in CornSimulations)
+            var cornSimulations = Object.FindObjectsOfType<CornSimulation.CornSimulation>();
+            foreach (var i in cornSimulations)
             {
                 i.Growth(_e);
-                //TODO: 该数值暂时没有办法被控制，需要加入一个控制数值量的输入口。
             }
+            // foreach (var i in CornSimulations)
+            // {
+            //     i.Growth(_e);
+            // }
         }
 
         if (GUI.Button(new Rect(25, 200, 200, 100), "Restart", buttonStyle))

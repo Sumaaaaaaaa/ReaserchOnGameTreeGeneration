@@ -8,7 +8,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/CornSimulation/1.unity
     guid: 313da6f47f68c3744b499ca0c79efaf7
-  - enabled: 1
+  - enabled: 0
     path: Assets/TestFiles/Test.unity
     guid: d5726d5d0fa186e46b5f5062d7180815
+  - enabled: 1
+    path: Assets/Visual.unity
+    guid: 88e89128ee8bb0f41b1df952834e0d8c
   m_configObjects: {}

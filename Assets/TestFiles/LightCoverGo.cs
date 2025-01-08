@@ -53,7 +53,6 @@ public class LightCoverGo : MonoBehaviour
             {
                 yield break;
             }
-            print(transform.position);
             transform.position += (position - transform.position) * speed * Time.deltaTime;
             yield return null;
         }

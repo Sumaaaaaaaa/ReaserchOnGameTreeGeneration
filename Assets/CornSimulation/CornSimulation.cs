@@ -62,7 +62,7 @@ namespace CornSimulation
         private AutomatonFunc _af;
 
         private PlantRenderer _plantRenderer;
-        private void Start()
+        private void Awake()
         {
             _af = new AutomatonFunc(randomSeed + 1,_plant);
             _plantRenderer = gameObject.GetComponent<PlantRenderer>();
@@ -136,7 +136,6 @@ namespace CornSimulation
                 flower: new Flower(2, (_) => 20),
                 fruit: new Fruit(30, BetaLaw2(7.3f, 3.8f, 30f, 223.85f))
             );
-        
             for (var _ = 0; _ < growthTimes;_++)
             {
                 _plant.Growth(1.0f);
@@ -146,10 +145,10 @@ namespace CornSimulation
         }
         
 
-        private void OnDrawGizmos()
-        {
-            if (_plant is not null) _plantRenderer.GizmosDraw(_plant);
-        }
+        // private void OnDrawGizmos()
+        // {
+        //     if (_plant is not null) _plantRenderer.GizmosDraw(_plant);
+        // }
 
         private void Update()
         {
